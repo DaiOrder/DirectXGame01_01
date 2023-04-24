@@ -1,19 +1,43 @@
 #include "GameScene.h"
 #include "TextureManager.h"
-#include <cassert>
+#include <assert.h>
 
 GameScene::GameScene() {}
 
-GameScene::~GameScene() {}
+GameScene::~GameScene() {
+	delete sprite_;
+	delete player_;
+	delete model_;
+}
 
 void GameScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+
+	//リソース
+	textureHandle_ = TextureManager::Load("MazokuGail.png");
+
+	sprite_ = Sprite::Create(textureHandle_, {100, 50});
+
+	viewTransform_.Initialize();
+
+	model_ = Model::Create();
+
+	//自キャラの生成
+	player_ = new Player();
+
+	//自キャラの初期化
+	player_->Initialize(model_, textureHandle_);
+
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+	//自キャラの更新
+	player_->Update();
+
+}
 
 void GameScene::Draw() {
 
@@ -41,6 +65,9 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
+	
+	//自キャラの描画
+	player_->Draw(viewTransform_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
