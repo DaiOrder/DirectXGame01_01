@@ -2,6 +2,7 @@
 
 #include "WorldTransform.h"
 #include "Model.h"
+#include <Input.h>
 //#include"GameScene.h"
 
 class Player {
@@ -28,5 +29,7 @@ public:
 		//テクスチャハンドル
 	    uint32_t textureHandle_ = 0u;
 
+		//キーボード入力
+	    Input* input_ = nullptr;
 
 };

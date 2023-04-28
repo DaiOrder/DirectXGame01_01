@@ -8,6 +8,7 @@ GameScene::~GameScene() {
 	delete sprite_;
 	delete player_;
 	delete model_;
+	delete debugCamera_;
 }
 
 void GameScene::Initialize() {
@@ -31,12 +32,29 @@ void GameScene::Initialize() {
 	//自キャラの初期化
 	player_->Initialize(model_, textureHandle_);
 
+	//debugCamera_ = new DebugCamera();
+
 }
 
 void GameScene::Update() {
 	//自キャラの更新
 	player_->Update();
 
+	debugCamera_->Update();
+
+	#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_BACKSPACE)) {
+		isDebugCameraActve_ = true;
+	}
+
+	if (isDebugCameraActve_) {
+		debugCamera_->Update();
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+
+	}
+
+	#endif
 }
 
 void GameScene::Draw() {
