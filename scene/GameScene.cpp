@@ -32,7 +32,9 @@ void GameScene::Initialize() {
 	//自キャラの初期化
 	player_->Initialize(model_, textureHandle_);
 
-	//debugCamera_ = new DebugCamera();
+	//viewProjection_.Initialize;
+
+	debugCamera_ = new DebugCamera(WinApp::kWindowClassName, WinApp::kWindowHeight);
 
 }
 
@@ -49,8 +51,8 @@ void GameScene::Update() {
 
 	if (isDebugCameraActve_) {
 		debugCamera_->Update();
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+		viewTransform_.matView = debugCamera_->GetViewProjection().matView;
+		viewTransform_.matProjection = debugCamera_->GetViewProjection().matProjection;
 
 	}
 
