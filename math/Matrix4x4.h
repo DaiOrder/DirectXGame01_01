@@ -9,10 +9,6 @@ struct Matrix4x4 final {
 	float m[4][4];
 };
 
-struct Vector3 {
-	float x, y, z;
-};
-
 //スケーリング行列
 Matrix4x4 MakeScaleMatrix(const Vector3 scale);
 
