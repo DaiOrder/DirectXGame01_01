@@ -34,11 +34,32 @@ void Player::Update() {
 		move.y += kCharacterSpeed;
 	}
 
+
+	//範囲制限
+	const float kMoveLimitX = 34.0f;
+	const float kMoveLimitY = 18.0f;
+
+	//範囲を超えない処理
+	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
+	worldTransform_.translation_.x = min(worldTransform_.translation_.x, +kMoveLimitX);
+	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
+	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
+
+
 	//座標移動 (ベクトルの加算)
-	//worldTransform_.translation_ += move.x;// ※数学の授業で作った関数を当てはめる
+	worldTransform_.translation_.x += move.x;// ※数学の授業で作った関数を当てはめる
+	worldTransform_.translation_.y += move.y;
 
 	worldTransform_.matWorld_ = MakeAffineMatrix(
-	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation);
+	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+
+	worldTransform_.TransferMatrix();
+
+
+	//キャラクターの座標を表示
+	//ImGui::SetNextWindowPos({60, 60});
+
+
 }
 
 void Player::Draw(ViewProjection& viewProjection) { 
