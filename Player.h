@@ -29,6 +29,8 @@ public:
 		//テクスチャハンドル
 	    uint32_t textureHandle_ = 0u;
 
+		Player* player_ = nullptr;
+
 		//キーボード入力
 	    Input* input_ = nullptr;
 

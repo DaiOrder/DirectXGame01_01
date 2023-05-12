@@ -18,11 +18,13 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	//リソース
-	textureHandle_ = TextureManager::Load("MazokuGail.png");
+	textureHandle_ = TextureManager::Load("sample.png");
 
 	sprite_ = Sprite::Create(textureHandle_, {100, 50});
 
-	viewTransform_.Initialize();
+	//viewTransform_.Initialize();
+
+	//viewTranslate_.Initialize();
 
 	model_ = Model::Create();
 
@@ -32,9 +34,9 @@ void GameScene::Initialize() {
 	//自キャラの初期化
 	player_->Initialize(model_, textureHandle_);
 
-	//viewProjection_.Initialize;
+	viewProjection_.Initialize();
 
-	debugCamera_ = new DebugCamera(WinApp::kWindowClassName, WinApp::kWindowHeight);
+	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
 }
 
@@ -51,8 +53,8 @@ void GameScene::Update() {
 
 	if (isDebugCameraActve_) {
 		debugCamera_->Update();
-		viewTransform_.matView = debugCamera_->GetViewProjection().matView;
-		viewTransform_.matProjection = debugCamera_->GetViewProjection().matProjection;
+		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 
 	}
 
@@ -87,7 +89,7 @@ void GameScene::Draw() {
 	/// </summary>
 	
 	//自キャラの描画
-	player_->Draw(viewTransform_);
+	player_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

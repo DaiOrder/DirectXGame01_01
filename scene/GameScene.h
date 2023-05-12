@@ -58,6 +58,8 @@ private: // メンバ変数
 
 	ViewProjection viewTransform_;
 
+	ViewProjection viewProjection_;
+
 	Model* model_ = nullptr;
 
 	Player* player_ = nullptr;

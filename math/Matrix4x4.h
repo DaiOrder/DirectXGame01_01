@@ -7,6 +7,8 @@
 /// </summary>
 struct Matrix4x4 final {
 	float m[4][4];
+	// 代入演算子オーバーロード
+	Matrix4x4& operator*=(const Matrix4x4& m1);
 };
 
 //スケーリング行列
@@ -24,7 +26,7 @@ Matrix4x4 MakeTransfomelateMatrix(const Vector3& trans);
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vector3& tanslate);
 
 //2項演算子
-Matrix4x4 cperator*(const Matrix4x4& m1, const Matrix4x4& m2);
+Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2);
 
 
 
