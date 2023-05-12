@@ -22,9 +22,7 @@ void GameScene::Initialize() {
 
 	sprite_ = Sprite::Create(textureHandle_, {100, 50});
 
-	//viewTransform_.Initialize();
-
-	//viewTranslate_.Initialize();
+	viewProjection_.Initialize();
 
 	model_ = Model::Create();
 

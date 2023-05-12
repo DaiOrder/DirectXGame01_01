@@ -53,11 +53,13 @@ private: // メンバ変数
 	/// ゲームシーン用
 	/// </summary>
 	
+	//2-1～
 	uint32_t textureHandle_ = 0;
 	Sprite* sprite_ = nullptr;
 
 	ViewProjection viewProjection_;
 
+	//2-2～
 	Model* model_ = nullptr;
 
 	Player* player_ = nullptr;

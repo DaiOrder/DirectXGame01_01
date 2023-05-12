@@ -3,7 +3,7 @@
 
 
 //スケーリング行列
-Matrix4x4 MakeScaleMatrix(const Vector3 scale) { 
+Matrix4x4 MakeScaleMatrix(const Vector3& scale) { 
 	Matrix4x4 result;
 
 	result = {
@@ -96,20 +96,37 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 
 	return Matrix4x4();
 };
+//
+//Matrix4x4& Matrix4x4::operator *= (const Matrix4x4& m1) {
+//	Matrix4x4 result = {};
+//
+//	for (size_t i = 0; i < 4; i++) {
+//		for (size_t j = 0; j < 4; j++) {
+//			for (size_t k = 0; k < 4; k++) {
+//				result.m[i][j] += m[i][k] * m1.m[k][j];
+//			}
+//		}
+//	}
+//
+//	*this = result;
+//	return *this;
+//}
 
-Matrix4x4& Matrix4x4::operator *= (const Matrix4x4& m1) {
+
+
+Matrix4x4& operator*=(Matrix4x4& m1, const Matrix4x4& m2) {
 	Matrix4x4 result = {};
 
 	for (size_t i = 0; i < 4; i++) {
 		for (size_t j = 0; j < 4; j++) {
 			for (size_t k = 0; k < 4; k++) {
-				result.m[i][j] += m[i][k] * m1.m[k][j];
+				result.m[i][j] += m1.m[i][k] * m2.m[k][j];
 			}
 		}
 	}
 
-	*this = result;
-	return *this;
+	m1 = result;
+	return m1;
 }
 
 Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2) {
