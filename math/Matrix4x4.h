@@ -7,8 +7,6 @@
 /// </summary>
 struct Matrix4x4 final {
 	float m[4][4];
-	// 代入演算子オーバーロード
-	Matrix4x4& operator*=(const Matrix4x4& m1);
 };
 
 //スケーリング行列
