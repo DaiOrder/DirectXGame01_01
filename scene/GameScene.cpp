@@ -1,14 +1,17 @@
 #include "GameScene.h"
 #include "TextureManager.h"
-#include <assert.h>
+#include <cassert>
 
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-	delete sprite_;
+	//delete sprite_;
 	delete player_;
 	delete model_;
+
+	// 2-2～
 	delete debugCamera_;
+
 }
 
 void GameScene::Initialize() {
@@ -18,13 +21,14 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	//リソース
-	textureHandle_ = TextureManager::Load("sample.png");
+	textureHandle_ = TextureManager::Load("MazokuGail.png");
 
-	sprite_ = Sprite::Create(textureHandle_, {100, 50});
+	//sprite_ = Sprite::Create(textureHandle_, {100, 50});
 
 	viewProjection_.Initialize();
 
 	model_ = Model::Create();
+	
 
 	//自キャラの生成
 	player_ = new Player();
@@ -32,7 +36,7 @@ void GameScene::Initialize() {
 	//自キャラの初期化
 	player_->Initialize(model_, textureHandle_);
 
-
+	// 2-2～
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
 }
@@ -41,6 +45,8 @@ void GameScene::Update() {
 	//自キャラの更新
 	player_->Update();
 
+
+	// 2-2～
 	debugCamera_->Update();
 
 	#ifdef _DEBUG
@@ -48,11 +54,17 @@ void GameScene::Update() {
 		isDebugCameraActve_ = true;
 	}
 
+	#endif
+
 	if (isDebugCameraActve_) {
 		debugCamera_->Update();
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 
+		viewProjection_.TransferMatrix();
+	} else {
+
+		viewProjection_.UpdateMatrix();
 	}
 
 }

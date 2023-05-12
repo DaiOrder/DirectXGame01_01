@@ -55,14 +55,12 @@ private: // メンバ変数
 	
 	//2-1～
 	uint32_t textureHandle_ = 0;
-	Sprite* sprite_ = nullptr;
+	//Sprite* sprite_ = nullptr;
 	ViewProjection viewProjection_;
 	Model* model_ = nullptr;
+	Player* player_ = nullptr;
 
-
+	// 2-2～
 	bool isDebugCameraActve_ = false;
 	DebugCamera* debugCamera_ = nullptr;
-
-
-
 };

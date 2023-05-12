@@ -3,7 +3,6 @@
 #include "WorldTransform.h"
 #include "Model.h"
 #include <Input.h>
-//#include"GameScene.h"
 
 class Player {
 public:
@@ -18,20 +17,17 @@ public:
 	void Draw(ViewProjection& viewProjection);
 
 	private:
-		//ワールド変換データ
-		WorldTransform worldTransform_;
+	// ワールド変換データ
+	WorldTransform worldTransform_;
 
-		ViewProjection viewProjection_;
+	// モデル
+	Model* model_ = nullptr;
 
-		//モデル
-	    Model* model_ = nullptr;
+	// テクスチャハンドル
+	uint32_t textureHandle_ = 0u;
 
-		//テクスチャハンドル
-	    uint32_t textureHandle_ = 0u;
 
-		Player* player_ = nullptr;
-
-		//キーボード入力
-	    Input* input_ = nullptr;
-
+	// 2-2～
+	// キーボード入力
+	Input* input_ = nullptr;
 };

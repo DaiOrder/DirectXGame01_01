@@ -1,5 +1,7 @@
 ﻿#include "Player.h"
-#include <assert.h>
+#include <cassert>
+
+#include "ImGuiManager.h"
 
 void Player::Initialize(Model* model, uint32_t textureHandle) {
 	assert(model); 
@@ -7,13 +9,15 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	textureHandle_ = textureHandle;
 	worldTransform_.Initialize();
 
+	// 2-2～
 	//シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 }
 
 void Player::Update() {
-	worldTransform_.TransferMatrix();
+	//worldTransform_.TransferMatrix();
 
+	// 2-2～
 	//キャラクターの移動ベクトル
 	Vector3 move = {0, 0, 0};
 
@@ -29,9 +33,9 @@ void Player::Update() {
 
 	//移動ベクトルの変更(上下)
 	if (input_->PushKey(DIK_UP)) {
-		move.y -= kCharacterSpeed;
-	} else if (input_->PushKey(DIK_DOWN)) {
 		move.y += kCharacterSpeed;
+	} else if (input_->PushKey(DIK_DOWN)) {
+		move.y -= kCharacterSpeed;
 	}
 
 
@@ -57,7 +61,16 @@ void Player::Update() {
 
 
 	//キャラクターの座標を表示
-	//ImGui::SetNextWindowPos({60, 60});
+	ImGui::SetNextWindowPos({60, 60});
+	ImGui::SetNextWindowContentSize({300, 100});
+
+	ImGui::Begin("Player");
+	float sliderValue[3] = {
+	    worldTransform_.translation_.x, worldTransform_.translation_.y,
+	    worldTransform_.translation_.z};
+	ImGui::SliderFloat3("position", sliderValue, -20.0f, 20.0f);
+	worldTransform_.translation_ = {sliderValue[0], sliderValue[1], sliderValue[2]};
+	ImGui::End();
 
 
 }
