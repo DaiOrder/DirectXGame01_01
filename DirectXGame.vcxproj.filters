@@ -58,6 +58,9 @@
     <Filter Include="ソース ファイル\Player">
       <UniqueIdentifier>{ccb82277-3db9-49f8-b36f-565bb2a9fe5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\PlayerBullet">
+      <UniqueIdentifier>{26a6fa2b-09d3-479f-838e-8a8acbb6938e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -80,6 +83,12 @@
     </ClCompile>
     <ClCompile Include="Matrix4x4.cpp">
       <Filter>ソース ファイル\math</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerBullet.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldTransform.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBullet.h">
+      <Filter>ヘッダー ファイル\PlayerBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

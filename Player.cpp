@@ -38,6 +38,19 @@ void Player::Update() {
 		move.y -= kCharacterSpeed;
 	}
 
+	//旋回
+	const float matRotSpeed = 0.02f;
+	if (input_->PushKey(DIK_A)) {
+		worldTransform_.rotation_.y -= matRotSpeed;
+	}
+	if (input_->PushKey(DIK_D)) {
+		worldTransform_.rotation_.y += matRotSpeed;
+	}
+
+	Attack();
+	if (bullet_) {
+		bullet_->Update();
+	}
 
 	//範囲制限
 	const float kMoveLimitX = 34.0f;
@@ -75,8 +88,24 @@ void Player::Update() {
 
 }
 
+//アタック
+ void Player::Attack() {
+	if (input_->TriggerKey(DIK_SPACE)) {
+		PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->Initialize(model_,  worldTransform_.translation_);
+
+		bullet_ = newBullet;
+	}
+
+}
+
 void Player::Draw(ViewProjection& viewProjection) { 
 
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+
+	if (bullet_) {
+		bullet_->Draw(viewProjection);
+	}
+
 
 }

@@ -2,7 +2,8 @@
 
 #include "WorldTransform.h"
 #include "Model.h"
-#include <Input.h>
+#include "Input.h"
+#include "PlayerBullet.h"
 
 class Player {
 public:
@@ -15,7 +16,10 @@ public:
 	//描画
 	void Draw(ViewProjection& viewProjection);
 
-	private:
+	//弾発射
+	void Attack();
+
+private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
 
@@ -25,8 +29,12 @@ public:
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 
+	//旋回
+	WorldTransform rotation_;
 
 	// 2-2～
 	// キーボード入力
 	Input* input_ = nullptr;
+
+	PlayerBullet* bullet_ = nullptr;
 };
