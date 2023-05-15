@@ -7,7 +7,6 @@
 class Player {
 public:
 	//初期化
-
 	void Initialize(Model* model, uint32_t textureHandle);
 
 	//更新
