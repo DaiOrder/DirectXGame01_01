@@ -76,7 +76,6 @@ void Player::Update() {
 	//キャラクターの座標を表示
 	ImGui::SetNextWindowPos({60, 60});
 	ImGui::SetNextWindowContentSize({300, 100});
-
 	ImGui::Begin("Player");
 	float sliderValue[3] = {
 	    worldTransform_.translation_.x, worldTransform_.translation_.y,
