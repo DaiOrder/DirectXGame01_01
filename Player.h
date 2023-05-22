@@ -5,6 +5,8 @@
 #include "Input.h"
 #include "PlayerBullet.h"
 
+#include <list>
+
 class Player {
 public:
 	//初期化
@@ -18,6 +20,8 @@ public:
 
 	//弾発射
 	void Attack();
+
+	~Player();
 
 private:
 	// ワールド変換データ
@@ -37,4 +41,7 @@ private:
 	Input* input_ = nullptr;
 
 	PlayerBullet* bullet_ = nullptr;
+
+	std::list<PlayerBullet*> bullets_;
+
 };

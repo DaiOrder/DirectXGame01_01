@@ -14,6 +14,15 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	input_ = Input::GetInstance();
 }
 
+Player::~Player() {
+	for (PlayerBullet* bullet : bullets_) {
+		if (bullet) {
+			delete bullet;
+			bullet = nullptr;
+		}
+	}
+}
+
 void Player::Update() {
 	//worldTransform_.TransferMatrix();
 
@@ -47,9 +56,15 @@ void Player::Update() {
 		worldTransform_.rotation_.y += matRotSpeed;
 	}
 
+	//キャラクター攻撃処理
 	Attack();
 	if (bullet_) {
 		bullet_->Update();
+	}
+
+	//弾更新
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Update();
 	}
 
 	//範囲制限
@@ -92,8 +107,17 @@ void Player::Update() {
 	if (input_->TriggerKey(DIK_SPACE)) {
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_,  worldTransform_.translation_);
+		if (bullet_) {
+			delete bullet_;
+			bullet_ = nullptr;
+		}
 
-		bullet_ = newBullet;
+		// 弾を生成し、初期化
+	//	PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->Initialize(model_, worldTransform_.translation_);
+
+		// 弾を登録する
+		bullets_.push_back(newBullet);
 	}
 
 }
@@ -104,6 +128,11 @@ void Player::Draw(ViewProjection& viewProjection) {
 
 	if (bullet_) {
 		bullet_->Draw(viewProjection);
+	}
+
+	//弾描画
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection);
 	}
 
 
