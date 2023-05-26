@@ -29,5 +29,5 @@ Matrix4x4& operator*=(Matrix4x4& m1,const Matrix4x4& m2);
 //2項演算子
 Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2);
 
-
-
+//ベクトル変換
+Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);
