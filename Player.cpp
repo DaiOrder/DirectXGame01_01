@@ -113,7 +113,6 @@ void Player::Update() {
 		}
 
 		// 弾を生成し、初期化
-	//	PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, worldTransform_.translation_);
 
 		// 弾を登録する
