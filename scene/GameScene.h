@@ -11,6 +11,7 @@
 
 #include "Player.h"
 #include <DebugCamera.h>
+#include "Enemy.h"
 
 
 /// <summary>
@@ -58,6 +59,7 @@ private: // メンバ変数
 	ViewProjection viewProjection_;
 	Model* model_ = nullptr;
 	Player* player_ = nullptr;
+	Enemy* enemy_ = nullptr;
 
 	// 2-2～
 	bool isDebugCameraActve_ = false;

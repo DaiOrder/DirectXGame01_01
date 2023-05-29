@@ -5,7 +5,7 @@ void PlayerBullet::Initialize(Model* model, const Vector3& pos, const Vector3& v
 	assert(model);
 	model_ = model;
 
-	texturehandle_ = TextureManager::Load("cube.jpg");
+	textureHandle_ = TextureManager::Load("cube.jpg");
 
 	world_.Initialize();
 	world_.translation_ = pos;
@@ -30,6 +30,6 @@ void PlayerBullet::Update() {
 }
 
 void PlayerBullet::Draw(ViewProjection& view) { 
-	model_->Draw(world_,view,texturehandle_);
+	model_->Draw(world_,view,textureHandle_);
 }
 

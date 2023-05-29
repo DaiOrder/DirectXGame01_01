@@ -12,6 +12,8 @@ GameScene::~GameScene() {
 	// 2-2～
 	delete debugCamera_;
 
+	// 2-6～
+	delete enemy_;
 }
 
 void GameScene::Initialize() {
@@ -39,12 +41,16 @@ void GameScene::Initialize() {
 	// 2-2～
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
+	//敵キャラの生成
+	enemy_ = new Enemy;
+	enemy_->Initialize(model_, {0, 0, 50});
 }
 
 void GameScene::Update() {
 	//自キャラの更新
 	player_->Update();
 
+	enemy_->Update();
 
 	// 2-2～
 	debugCamera_->Update();
@@ -96,6 +102,9 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	
+	//敵の描画
+	enemy_->Draw(viewProjection_);
+
 	//自キャラの描画
 	player_->Draw(viewProjection_);
 

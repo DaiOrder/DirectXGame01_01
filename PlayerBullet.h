@@ -17,7 +17,7 @@ private:
 
 	Model* model_;
 
-	uint32_t texturehandle_;
+	uint32_t textureHandle_;
 
 	//速度
 	Vector3 velocity_;
