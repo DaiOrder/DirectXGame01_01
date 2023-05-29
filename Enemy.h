@@ -15,7 +15,11 @@ public:
 	//描画
 	void Draw(ViewProjection& view);
 
-	~Enemy();
+	//行動フェーズ
+	enum class Phase {
+		Approach, //接近する
+		Leave,	  //離脱する
+	};
 
 private:
 	//ワールドトランスフォーム
@@ -29,5 +33,8 @@ private:
 
 	// 速度
 	Vector3 velocity_;
+
+	//フェーズ
+	Phase phase_ = Phase::Approach;
 
 };
