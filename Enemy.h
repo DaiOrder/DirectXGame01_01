@@ -3,6 +3,10 @@
 #include "Vector3.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "Input.h"
+#include "EnemyBullet.h"
+
+#include <list>
 
 class Enemy {
 public:
@@ -14,6 +18,21 @@ public:
 
 	//描画
 	void Draw(ViewProjection& view);
+
+	// 弾発射
+	//void Attack();
+	
+	// 弾発射
+	void Fire();
+
+	// フェーズの初期化
+	void PhaseInitialize();
+
+	//デストラクタ
+	~Enemy();
+
+	// 発射間隔
+	static const int kFireInterval = 40;
 
 	//行動フェーズ
 	enum class Phase {
@@ -29,12 +48,22 @@ private:
 	Model* model_;
 
 	//リソース
-	uint32_t textureHandle_;
+	uint32_t textureHandle_ = 0u;
 
 	// 速度
 	Vector3 velocity_;
 
 	//フェーズ
 	Phase phase_ = Phase::Approach;
+	
+	//EnemyBullet* bullet_ = nullptr;
+	std::list<EnemyBullet*> bullets_;
+
+
+	//タイマー
+	int32_t Timer = 0;
+
+	// キーボード入力
+	Input* input_ = nullptr;
 
 };

@@ -1,7 +1,7 @@
-﻿#include "PlayerBullet.h"
+﻿#include "EnemyBullet.h"
 #include <cassert>
 
-void PlayerBullet::Initialize(Model* model, const Vector3& pos, const Vector3& velocity) {
+void EnemyBullet::Initialize(Model* model, const Vector3& pos, const Vector3& velocity) {
 	assert(model);
 	model_ = model;
 
@@ -14,22 +14,22 @@ void PlayerBullet::Initialize(Model* model, const Vector3& pos, const Vector3& v
 	velocity_ = velocity;
 }
 
-void PlayerBullet::Update() { 
-	world_.UpdateMatrix();
+void EnemyBullet::Update() {
 
 	world_.translation_.x += velocity_.x;
 	world_.translation_.y += velocity_.y;
 	world_.translation_.z += velocity_.z;
+
+	world_.UpdateMatrix();
 
 	// 時間経過でデス
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
 	}
 
-
 }
 
-void PlayerBullet::Draw(ViewProjection& view) { 
-	model_->Draw(world_,view,textureHandle_);
-}
+void EnemyBullet::Draw(ViewProjection& view) { 
+	model_->Draw(world_, view, textureHandle_);
 
+}

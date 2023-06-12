@@ -1,6 +1,7 @@
 ﻿#include "Enemy.h"
 #include <cassert>
 #include <ImGuiManager.h>
+#include "EnemyBullet.h"
 
 // 初期化
 void Enemy::Initialize(Model* model, const Vector3& pos) {
@@ -11,6 +12,17 @@ void Enemy::Initialize(Model* model, const Vector3& pos) {
 
 	world_.Initialize();
 	world_.translation_ = pos;
+
+	PhaseInitialize();
+
+}
+
+Enemy::~Enemy() {
+	for (EnemyBullet* bullet : bullets_) {
+		if (bullet->IsDead()) {
+			delete bullet;
+		}
+	}
 }
 
 // アプデ
@@ -47,10 +59,56 @@ void Enemy::Update() {
 	ImGui::Begin("Window");
 	ImGui::DragFloat3("world_.translation_.z", &world_.translation_.x, 0.01f);
 	ImGui::End();
+	// デスフラグの立った弾を削除
+		bullets_.remove_if([](EnemyBullet* bullet) {
+			if (bullet->IsDead()) {
+				delete bullet;
+				return true;
+			}
+			return false;
+		});
+
+		Timer--;
+		if (Timer == 0) {
+			// 弾発射
+			Fire();
+
+			Timer = kFireInterval;
+	
+		}
+
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Update();
+	}
+
+	
+}
+
+void Enemy::PhaseInitialize() {
+	//発射タイマーの初期化
+	Timer = kFireInterval;
+
+}
+
+void Enemy::Fire() {
+	Vector3 Velocity(0, 0.01f, -0.8f);
+
+	// 弾を生成し、初期化
+	EnemyBullet* newBullet = new EnemyBullet();
+	newBullet->Initialize(model_, world_.translation_, Velocity);
+
+	// 弾を登録する
+	bullets_.push_back(newBullet);
+
 }
 
 // 描画
 void Enemy::Draw(ViewProjection& view) { 
 	model_->Draw(world_, view, textureHandle_);
 	
+	// 弾描画
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Draw(view);
+	}
+
 }
