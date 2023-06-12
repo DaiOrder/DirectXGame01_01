@@ -11,7 +11,6 @@ void Enemy::Initialize(Model* model, const Vector3& pos) {
 
 	world_.Initialize();
 	world_.translation_ = pos;
-
 }
 
 // アプデ
@@ -20,10 +19,6 @@ void Enemy::Update() {
 
 	const float kEnemySpeed = -0.2f;
 	velocity_ = {0, 0, kEnemySpeed};
-
-	//world_.translation_.x += velocity_.x;
-	//world_.translation_.y += velocity_.y;
-	//world_.translation_.z += velocity_.z;
 
 	switch (phase_) { 
 	case Phase::Approach:
