@@ -68,7 +68,6 @@ private:
 	//EnemyBullet* bullet_ = nullptr;
 	std::list<EnemyBullet*> bullets_;
 
-
 	//タイマー
 	int32_t Timer = 0;
 
