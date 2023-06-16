@@ -25,6 +25,18 @@ Enemy::~Enemy() {
 	}
 }
 
+Vector3 Enemy::GetWorldPosition() { 
+	// ワールド座標を入れる変数
+	Vector3 worldPos;
+
+	// ワールド行列の平行移動成分を取得 (ワールド座標)
+	worldPos.x = world_.translation_.x;
+	worldPos.y = world_.translation_.y;
+	worldPos.z = world_.translation_.z;
+
+	return worldPos;
+}
+
 // アプデ
 void Enemy::Update() {
 	world_.UpdateMatrix();
@@ -59,28 +71,28 @@ void Enemy::Update() {
 	ImGui::Begin("Window");
 	ImGui::DragFloat3("world_.translation_.z", &world_.translation_.x, 0.01f);
 	ImGui::End();
+
 	// デスフラグの立った弾を削除
-		bullets_.remove_if([](EnemyBullet* bullet) {
-			if (bullet->IsDead()) {
-				delete bullet;
-				return true;
-			}
-			return false;
-		});
-
-		Timer--;
-		if (Timer == 0) {
-			// 弾発射
-			Fire();
-
-			Timer = kFireInterval;
-	
+	bullets_.remove_if([](EnemyBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
 		}
+		return false;
+	});
+
+	Timer--;
+	if (Timer == 0) {
+		// 弾発射
+		Fire();
+
+		Timer = kFireInterval;
+	
+	}
 
 	for (EnemyBullet* bullet : bullets_) {
 		bullet->Update();
 	}
-
 	
 }
 
@@ -92,6 +104,11 @@ void Enemy::PhaseInitialize() {
 
 void Enemy::Fire() {
 	Vector3 Velocity(0, 0.01f, -0.8f);
+
+	/*assert(player_);
+	const float kBulletSpeed = 1.0f;*/
+
+
 
 	// 弾を生成し、初期化
 	EnemyBullet* newBullet = new EnemyBullet();

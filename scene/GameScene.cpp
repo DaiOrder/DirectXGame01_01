@@ -2,7 +2,12 @@
 #include "TextureManager.h"
 #include <cassert>
 
-GameScene::GameScene() {}
+#include "Enemy.h"
+#include "Player.h"
+
+GameScene::GameScene() { 
+
+}
 
 GameScene::~GameScene() {
 	//delete sprite_;
@@ -44,6 +49,10 @@ void GameScene::Initialize() {
 	//敵キャラの生成
 	enemy_ = new Enemy;
 	enemy_->Initialize(model_, {0, 0, 50});
+	
+	// 敵キャラに自キャラのアドレスを渡す
+	enemy_->SetPlayer(player_);
+
 }
 
 void GameScene::Update() {

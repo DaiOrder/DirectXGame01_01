@@ -21,6 +21,9 @@ public:
 	//弾発射
 	void Attack();
 
+	//ワールド座標を取得
+	Vector3 GetWorldPosition();
+
 	~Player();
 
 private:
@@ -43,5 +46,6 @@ private:
 	PlayerBullet* bullet_ = nullptr;
 
 	std::list<PlayerBullet*> bullets_;
+
 
 };

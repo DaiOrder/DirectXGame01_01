@@ -8,6 +8,10 @@
 
 #include <list>
 
+// 自クラスの前方宣言
+class Player;
+
+
 class Enemy {
 public:
 	//初期化
@@ -33,6 +37,11 @@ public:
 
 	// 発射間隔
 	static const int kFireInterval = 40;
+
+void SetPlayer(Player* player) { player_ = player; }
+
+	// ワールド座標を取得
+	Vector3 GetWorldPosition();
 
 	//行動フェーズ
 	enum class Phase {
@@ -65,5 +74,8 @@ private:
 
 	// キーボード入力
 	Input* input_ = nullptr;
+	
+	// 自キャラ
+	Player* player_ = nullptr;
 
 };
