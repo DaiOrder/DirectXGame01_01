@@ -11,7 +11,6 @@
 // 自クラスの前方宣言
 class Player;
 
-
 class Enemy {
 public:
 	//初期化
@@ -22,9 +21,6 @@ public:
 
 	//描画
 	void Draw(ViewProjection& view);
-
-	// 弾発射
-	//void Attack();
 	
 	// 弾発射
 	void Fire();
@@ -48,6 +44,12 @@ void SetPlayer(Player* player) { player_ = player; }
 		Approach, //接近する
 		Leave,	  //離脱する
 	};
+
+	// 衝突を検出したら呼び出されるコールバック関数
+	void OnCollision();
+
+	// 弾リストを取得
+	const std::list<EnemyBullet*> GetBullets() const { return bullets_; }
 
 private:
 	//ワールドトランスフォーム

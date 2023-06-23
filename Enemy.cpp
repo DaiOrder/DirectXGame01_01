@@ -40,6 +40,8 @@ Vector3 Enemy::GetWorldPosition() {
 	return worldPos;
 }
 
+void Enemy::OnCollision() {}
+
 // アプデ
 void Enemy::Update() {
 	world_.UpdateMatrix();
