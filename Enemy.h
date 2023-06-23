@@ -34,7 +34,7 @@ public:
 	// 発射間隔
 	static const int kFireInterval = 40;
 
-void SetPlayer(Player* player) { player_ = player; }
+	void SetPlayer(Player* player) { player_ = player; }
 
 	// ワールド座標を取得
 	Vector3 GetWorldPosition();

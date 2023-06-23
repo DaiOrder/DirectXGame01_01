@@ -31,6 +31,7 @@ void PlayerBullet::Update() {
 void PlayerBullet::Draw(ViewProjection& view) { 
 	model_->Draw(world_,view,textureHandle_); }
 
+//当たり判定の自機弾のデスフラグを立てる
 void PlayerBullet::OnCollision() { 
 	isDead_ = true; 
 

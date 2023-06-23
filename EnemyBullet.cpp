@@ -34,8 +34,9 @@ void EnemyBullet::Draw(ViewProjection& view) {
 
 }
 
+// 当たり判定の敵弾のデスフラグを立てる
 void EnemyBullet::OnCollision() {
-	isDead_ = true; 
+	isDead_ = true;
 
 }
 

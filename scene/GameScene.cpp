@@ -62,6 +62,9 @@ void GameScene::Update() {
 
 	enemy_->Update();
 
+	//当たり判定
+	CheckAllCollisions();
+
 	// 2-2～
 	debugCamera_->Update();
 
@@ -161,9 +164,9 @@ void GameScene::CheckAllCollisions() {
 		dis.y = posA.y - posB.y;
 		dis.z = posA.z - posB.z;
 
-		float distance = sqrt(dis.x + dis.y + dis.z);
+		float distance = sqrt((dis.x * dis.x) + (dis.y * dis.y) + (dis.z * dis.z));
 
-		if (distance <= 100) {
+		if (distance <= 2) {
 			//自キャラの衝突時コールバックを呼び出す
 			player_->OnCollision();
 
@@ -171,7 +174,9 @@ void GameScene::CheckAllCollisions() {
 			bullet->OnCollision();
 		}
 
-
+	
+			//bullet->OnCollision();
+		
 	}
 
 #pragma endregion
@@ -179,7 +184,7 @@ void GameScene::CheckAllCollisions() {
 #pragma region 自弾と敵キャラの当たり判定
 
 	// 敵キャラの座標
-	posA = player_->GetWorldPosition();
+	posA = enemy_->GetWorldPosition();
 
 	// 敵キャラと敵弾全ての当たり判定
 	for (PlayerBullet* bullet : playerBullets) {
@@ -192,11 +197,11 @@ void GameScene::CheckAllCollisions() {
 		dis.y = posA.y - posB.y;
 		dis.z = posA.z - posB.z;
 
-		float distance = sqrt(dis.x + dis.y + dis.z);
+		float distance = sqrt((dis.x * dis.x) + (dis.y * dis.y) + (dis.z * dis.z));
 
-		if (distance <= 100) {
+		if (distance <= 2) {
 			// 敵キャラの衝突時コールバックを呼び出す
-			player_->OnCollision();
+			enemy_->OnCollision();
 
 			// 自弾の衝突時コールバックを呼び出す
 			bullet->OnCollision();
@@ -208,7 +213,7 @@ void GameScene::CheckAllCollisions() {
 #pragma region 自弾と敵弾の当たり判定
 
 	// 敵キャラの座標
-	posA = player_->GetWorldPosition();
+	//posA = player_->GetWorldPosition();
 
 	// 自弾と敵弾全ての当たり判定
 	for (PlayerBullet* bulletPlayer : playerBullets) {
@@ -224,9 +229,9 @@ void GameScene::CheckAllCollisions() {
 			dis.y = posA.y - posB.y;
 			dis.z = posA.z - posB.z;
 
-			float distance = sqrt(dis.x + dis.y + dis.z);
+			float distance = sqrt((dis.x * dis.x) + (dis.y * dis.y) + (dis.z * dis.z));
 
-			if (distance <= 100) {
+			if (distance <= 2) {
 				// 敵キャラの衝突時コールバックを呼び出す
 				bulletPlayer->OnCollision();
 
