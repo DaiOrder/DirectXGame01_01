@@ -212,9 +212,6 @@ void GameScene::CheckAllCollisions() {
 
 #pragma region 自弾と敵弾の当たり判定
 
-	// 敵キャラの座標
-	//posA = player_->GetWorldPosition();
-
 	// 自弾と敵弾全ての当たり判定
 	for (PlayerBullet* bulletPlayer : playerBullets) {
 		posA = bulletPlayer->GetWorldPosition();
