@@ -5,14 +5,15 @@
 
 #include "Enemy.h"
 #include "Player.h"
+//#include "Skydome.h"
 
 GameScene::GameScene() { 
 
 }
 
 GameScene::~GameScene() {
-	//delete sprite_;
 	delete player_;
+
 	delete model_;
 
 	// 2-2～
@@ -20,6 +21,9 @@ GameScene::~GameScene() {
 
 	// 2-6～
 	delete enemy_;
+
+	// 02-11～
+	delete modelSkydome_;
 }
 
 void GameScene::Initialize() {
@@ -28,15 +32,17 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	//リソース
+	//自機リソース
 	textureHandle_ = TextureManager::Load("MazokuGail.png");
+
+	//スカイドームリソース
+	//_skydome_textureHandle = TextureManager::Load("uvChecker.png");
 
 	//sprite_ = Sprite::Create(textureHandle_, {100, 50});
 
 	viewProjection_.Initialize();
 
 	model_ = Model::Create();
-	
 
 	//自キャラの生成
 	player_ = new Player();
@@ -54,6 +60,14 @@ void GameScene::Initialize() {
 	// 敵キャラに自キャラのアドレスを渡す
 	enemy_->SetPlayer(player_);
 
+	// 3Dモデルの生成 : スカイドーム
+	modelSkydome_ = Model::CreateFromOBJ("skydome");
+
+	//スカイドームの生成
+	skydome_ = new Skydome();
+	
+	//スカイドームの初期化
+	skydome_->Initialize(modelSkydome_);
 }
 
 void GameScene::Update() {
@@ -64,6 +78,9 @@ void GameScene::Update() {
 
 	//当たり判定
 	CheckAllCollisions();
+
+	//スカイドーム
+	skydome_->Update();
 
 	// 2-2～
 	debugCamera_->Update();
@@ -114,7 +131,10 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	
+
+	//スカイドーム
+	skydome_->Draw(viewProjection_);
+
 	//敵の描画
 	enemy_->Draw(viewProjection_);
 
@@ -174,9 +194,6 @@ void GameScene::CheckAllCollisions() {
 			bullet->OnCollision();
 		}
 
-	
-			//bullet->OnCollision();
-		
 	}
 
 #pragma endregion

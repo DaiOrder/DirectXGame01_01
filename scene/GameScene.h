@@ -12,6 +12,7 @@
 #include "Player.h"
 #include <DebugCamera.h>
 #include "Enemy.h"
+#include "Skydome.h"
 
 
 /// <summary>
@@ -69,4 +70,14 @@ private: // メンバ変数
 	// 2-2～
 	bool isDebugCameraActve_ = false;
 	DebugCamera* debugCamera_ = nullptr;
+
+	// 2-11
+	//3Dモデルデータ
+	Model* modelSkydome_ = nullptr;
+	//3Dモデルデータの生成
+	Skydome* skydome_ = nullptr;
+
+	
+
+
 };

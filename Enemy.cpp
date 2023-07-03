@@ -108,7 +108,6 @@ void Enemy::PhaseInitialize() {
 }
 
 void Enemy::Fire() {
-	//Vector3 Velocity(0, 0.01f, -0.8f);
 
 	assert(player_);
 	const float kBulletSpeed = 0.8f;
@@ -125,9 +124,8 @@ void Enemy::Fire() {
 
 	//正規化
 	float length = sqrt(
-	deltaVector_.x * deltaVector_.x + 
-		deltaVector_.y * deltaVector_.y + 
-		deltaVector_.z * deltaVector_.z);
+	deltaVector_.x * deltaVector_.x + deltaVector_.y * deltaVector_.y + deltaVector_.z * deltaVector_.z);
+
 	deltaVector_.x /= length;
 	deltaVector_.y /= length;
 	deltaVector_.z /= length;
@@ -136,7 +134,6 @@ void Enemy::Fire() {
 	deltaVector_.x *= kBulletSpeed;
 	deltaVector_.y *= kBulletSpeed;
 	deltaVector_.z *= kBulletSpeed;
-
 
 	// 弾を生成し、初期化
 	EnemyBullet* newBullet = new EnemyBullet();

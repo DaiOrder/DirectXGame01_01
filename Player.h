@@ -40,8 +40,9 @@ private:
 	// モデル
 	Model* model_ = nullptr;
 
-	// テクスチャハンドル
+	// k自機テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
+
 
 	//旋回
 	WorldTransform rotation_;
