@@ -34,7 +34,9 @@ void GameScene::Initialize() {
 
 	//自機リソース
 	textureHandle_ = TextureManager::Load("MazokuGail.png");
-
+	
+	// ビュープロジェクションの初期化
+	viewProjection_.farZ = 150;
 	viewProjection_.Initialize();
 
 	model_ = Model::Create();
