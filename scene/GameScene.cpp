@@ -65,6 +65,13 @@ void GameScene::Initialize() {
 	
 	//スカイドームの初期化
 	skydome_->Initialize(modelSkydome_);
+
+	//レールカメラの生成
+	railCamera_ = new RailCamera();
+
+	//レールカメラの初期化
+	railCamera_->Initialize();
+
 }
 
 void GameScene::Update() {
@@ -78,6 +85,9 @@ void GameScene::Update() {
 
 	//スカイドーム
 	skydome_->Update();
+
+	//レールカメラ
+	railCamera_->Update();
 
 	// 2-2～
 	debugCamera_->Update();

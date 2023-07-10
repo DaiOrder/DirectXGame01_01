@@ -13,6 +13,7 @@
 #include <DebugCamera.h>
 #include "Enemy.h"
 #include "Skydome.h"
+#include "RailCamera.h"
 
 
 /// <summary>
@@ -77,7 +78,9 @@ private: // メンバ変数
 	//3Dモデルデータの生成
 	Skydome* skydome_ = nullptr;
 
-	
+	// 2-12
+	//レールカメラ
+	RailCamera* railCamera_ = nullptr;
 
 
 };
