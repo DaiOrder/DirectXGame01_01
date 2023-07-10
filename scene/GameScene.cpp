@@ -35,11 +35,6 @@ void GameScene::Initialize() {
 	//自機リソース
 	textureHandle_ = TextureManager::Load("MazokuGail.png");
 
-	//スカイドームリソース
-	//_skydome_textureHandle = TextureManager::Load("uvChecker.png");
-
-	//sprite_ = Sprite::Create(textureHandle_, {100, 50});
-
 	viewProjection_.Initialize();
 
 	model_ = Model::Create();
