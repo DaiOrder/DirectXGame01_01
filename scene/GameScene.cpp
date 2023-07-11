@@ -70,7 +70,7 @@ void GameScene::Initialize() {
 	railCamera_ = new RailCamera();
 
 	//レールカメラの初期化
-	railCamera_->Initialize();
+	railCamera_->Initialize({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f});
 
 }
 

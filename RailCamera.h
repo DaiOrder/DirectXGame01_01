@@ -1,12 +1,13 @@
 ﻿#pragma once
 #include "WorldTransform.h"
 #include "ViewProjection.h"
+#include "assert.h"
 
 class RailCamera {
 public:
 
 	//初期化
-	void Initialize();
+	void Initialize(const Vector3& position, const Vector3& rotation);
 
 	//更新
 	void Update();
@@ -18,6 +19,6 @@ private:
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
 
-
+	
 
 };
