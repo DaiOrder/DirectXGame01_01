@@ -32,6 +32,8 @@ public:
 	// 弾リストを取得
 	const std::list<PlayerBullet*> GetBullets() const { return bullets_; }
 
+	// レールカメラとのペアレント
+	void SetParent(const WorldTransform* parent) {}
 
 private:
 	// ワールド変換データ
@@ -42,7 +44,6 @@ private:
 
 	// k自機テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
-
 
 	//旋回
 	WorldTransform rotation_;

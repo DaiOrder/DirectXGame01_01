@@ -12,6 +12,8 @@ public:
 	//更新
 	void Update();
 
+	const ViewProjection& GetRailView() const { return viewProjection_; }
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;

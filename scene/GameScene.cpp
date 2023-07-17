@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include <cassert>
 #include<math.h>
+#include "AxisIndicator.h"
 
 #include "Enemy.h"
 #include "Player.h"
@@ -50,6 +51,9 @@ void GameScene::Initialize() {
 	// 2-2～
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
+	AxisIndicator::GetInstance()->SetVisible(true);
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+
 	//敵キャラの生成
 	enemy_ = new Enemy;
 	enemy_->Initialize(model_, {0, 0, 50});
@@ -71,6 +75,8 @@ void GameScene::Initialize() {
 
 	//レールカメラの初期化
 	railCamera_->Initialize({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f});
+
+	//player_->SetParent(&railCamera_->GetWorldTransform());
 
 }
 
@@ -99,6 +105,8 @@ void GameScene::Update() {
 
 	#endif
 
+	
+
 	if (isDebugCameraActve_) {
 		debugCamera_->Update();
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
@@ -109,6 +117,12 @@ void GameScene::Update() {
 
 		viewProjection_.UpdateMatrix();
 	}
+
+	// レールカメラの描画を反映
+	viewProjection_.matView = railCamera_->GetRailView().matView;
+	viewProjection_.matProjection = railCamera_->GetRailView().matProjection;
+
+	viewProjection_.TransferMatrix();
 
 }
 

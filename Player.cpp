@@ -3,6 +3,7 @@
 
 #include "ImGuiManager.h"
 
+//初期化
 void Player::Initialize(Model* model, uint32_t textureHandle) {
 	assert(model); 
 	model_ = model;
@@ -14,6 +15,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle) {
 	input_ = Input::GetInstance();
 }
 
+//デストラクタ
 Player::~Player() {
 	for (PlayerBullet* bullet : bullets_) {
 		if (bullet) {
@@ -23,8 +25,10 @@ Player::~Player() {
 	}
 }
 
+//衝突判定
 void Player::OnCollision() {}
 
+//更新
 void Player::Update() {
 	//デスフラグの立った弾を削除
 	bullets_.remove_if([](PlayerBullet* bullet) {
@@ -145,7 +149,8 @@ void Player::Update() {
 	return worldPos; 
  }
 
-void Player::Draw(ViewProjection& viewProjection) { 
+ //描画
+ void Player::Draw(ViewProjection& viewProjection) { 
 
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 
@@ -158,5 +163,11 @@ void Player::Draw(ViewProjection& viewProjection) {
 		bullet->Draw(viewProjection);
 	}
 
+
+}
+
+ //レールカメラとのペアレント
+void Player::SetParent(const WorldTransform* parent) { 
+	worldTransform_.parent_ = parent; 
 
 }
