@@ -129,7 +129,7 @@ void RailCamera::Initialize(const Vector3& position, const Vector3& rotation) {
 
 void RailCamera::Update() { 
 	//レールカメラの移動・回転の数値
-	Vector3 move = {0.0f, 0.0f, 0.05f};
+	Vector3 move = {0.0f, 0.0f, -0.05f};
 	Vector3 rot = {0.0f, 0.00f, 0.0f};
 
 	//座標に数値を加算(移動)

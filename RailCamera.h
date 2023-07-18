@@ -14,13 +14,13 @@ public:
 
 	const ViewProjection& GetRailView() const { return viewProjection_; }
 
+	const WorldTransform& GetWorldTransform() const { return worldTransform_; }
+
 private:
 	//ワールド変換データ
 	WorldTransform worldTransform_;
 
 	//ビュープロジェクション
 	ViewProjection viewProjection_;
-
-	
 
 };

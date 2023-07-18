@@ -10,7 +10,7 @@
 class Player {
 public:
 	//初期化
-	void Initialize(Model* model, uint32_t textureHandle);
+	void Initialize(Model* model, uint32_t textureHandle, Vector3& position);
 
 	//更新
 	void Update();
@@ -33,7 +33,7 @@ public:
 	const std::list<PlayerBullet*> GetBullets() const { return bullets_; }
 
 	// レールカメラとのペアレント
-	void SetParent(const WorldTransform* parent) {}
+	void SetParent(const WorldTransform* parent);
 
 private:
 	// ワールド変換データ
@@ -42,7 +42,7 @@ private:
 	// モデル
 	Model* model_ = nullptr;
 
-	// k自機テクスチャハンドル
+	// 自機テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
 
 	//旋回

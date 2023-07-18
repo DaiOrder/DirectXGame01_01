@@ -4,11 +4,12 @@
 #include "ImGuiManager.h"
 
 //初期化
-void Player::Initialize(Model* model, uint32_t textureHandle) {
-	assert(model); 
+void Player::Initialize(Model* model, uint32_t textureHandle, Vector3& position) {
+	assert(model);
 	model_ = model;
 	textureHandle_ = textureHandle;
 	worldTransform_.Initialize();
+	worldTransform_.translation_ = position;
 
 	// 2-2～
 	//シングルトンインスタンスを取得する
@@ -168,6 +169,7 @@ void Player::Update() {
 
  //レールカメラとのペアレント
 void Player::SetParent(const WorldTransform* parent) { 
+	//親子関係を結ぶ
 	worldTransform_.parent_ = parent; 
 
 }

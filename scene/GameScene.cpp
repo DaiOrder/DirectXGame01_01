@@ -45,8 +45,10 @@ void GameScene::Initialize() {
 	//自キャラの生成
 	player_ = new Player();
 
+	// 自機をカメラからずらす
+	Vector3 playerPosition(0.0f, 0.0f, 15.0f);
 	//自キャラの初期化
-	player_->Initialize(model_, textureHandle_);
+	player_->Initialize(model_, textureHandle_, playerPosition);
 
 	// 2-2～
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
@@ -74,9 +76,10 @@ void GameScene::Initialize() {
 	railCamera_ = new RailCamera();
 
 	//レールカメラの初期化
-	railCamera_->Initialize({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f});
+	railCamera_->Initialize({0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 0.0f});
 
-	//player_->SetParent(&railCamera_->GetWorldTransform());
+	//自キャラとレールカメラの親子関係を結ぶ
+	player_->SetParent(&railCamera_->GetWorldTransform());
 
 }
 
@@ -104,8 +107,6 @@ void GameScene::Update() {
 	}
 
 	#endif
-
-	
 
 	if (isDebugCameraActve_) {
 		debugCamera_->Update();
