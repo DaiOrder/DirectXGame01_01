@@ -11,7 +11,6 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Vector3& position)
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 
-	// 2-2～
 	//シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 }
@@ -101,7 +100,6 @@ void Player::Update() {
 
 	worldTransform_.TransferMatrix();
 
-
 	//キャラクターの座標を表示
 	ImGui::SetNextWindowPos({60, 60});
 	ImGui::SetNextWindowContentSize({300, 100});
@@ -113,6 +111,8 @@ void Player::Update() {
 	worldTransform_.translation_ = {sliderValue[0], sliderValue[1], sliderValue[2]};
 	ImGui::End();
 
+	//レールカメラと連動
+	worldTransform_.UpdateMatrix();
 
 }
 
@@ -129,7 +129,7 @@ void Player::Update() {
 
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
+		newBullet->Initialize(model_, GetWorldPosition(), velocity);
 
 		// 弾を登録する
 		bullets_.push_back(newBullet);
@@ -143,9 +143,9 @@ void Player::Update() {
 	 Vector3 worldPos;
 	 
 	 //ワールド行列の平行移動成分を取得 (ワールド座標)
-	 worldPos.x = worldTransform_.translation_.x;
-	 worldPos.y = worldTransform_.translation_.y;
-	 worldPos.z = worldTransform_.translation_.z;
+	 worldPos.x = worldTransform_.matWorld_.m[3][0];
+	 worldPos.y = worldTransform_.matWorld_.m[3][1];
+	 worldPos.z = worldTransform_.matWorld_.m[3][2];
 	 
 	return worldPos; 
  }
@@ -164,8 +164,7 @@ void Player::Update() {
 		bullet->Draw(viewProjection);
 	}
 
-
-}
+ }
 
  //レールカメラとのペアレント
 void Player::SetParent(const WorldTransform* parent) { 

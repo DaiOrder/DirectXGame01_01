@@ -13,8 +13,8 @@ void Enemy::Initialize(Model* model, const Vector3& pos) {
 
 	textureHandle_ = TextureManager::Load("sample.png");
 
-	world_.Initialize();
-	world_.translation_ = pos;
+	worldTransform_.Initialize();
+	worldTransform_.translation_ = pos;
 
 	PhaseInitialize();
 
@@ -33,9 +33,9 @@ Vector3 Enemy::GetWorldPosition() {
 	Vector3 worldPos;
 
 	// ワールド行列の平行移動成分を取得 (ワールド座標)
-	worldPos.x = world_.translation_.x;
-	worldPos.y = world_.translation_.y;
-	worldPos.z = world_.translation_.z;
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
 
 	return worldPos;
 }
@@ -44,7 +44,7 @@ void Enemy::OnCollision() {}
 
 // アプデ
 void Enemy::Update() {
-	world_.UpdateMatrix();
+	worldTransform_.UpdateMatrix();
 
 	const float kEnemySpeed = -0.2f;
 	velocity_ = {0, 0, kEnemySpeed};
@@ -53,11 +53,11 @@ void Enemy::Update() {
 	case Phase::Approach:
 	default:
 		// 移動 (ベクトルを加算)
-		world_.translation_.x += velocity_.x;
-		world_.translation_.y += velocity_.y;
-		world_.translation_.z += velocity_.z;
+		worldTransform_.translation_.x += velocity_.x;
+		worldTransform_.translation_.y += velocity_.y;
+		worldTransform_.translation_.z += velocity_.z;
 
-		if (world_.translation_.z < -10.0f) {
+		if (worldTransform_.translation_.z < -10.0f) {
 			phase_ = Phase::Leave;
 		}
 		break;
@@ -67,14 +67,14 @@ void Enemy::Update() {
 		velocity_.y = 0.1f;
 
 		// 移動 (ベクトルを加算)
-		world_.translation_.x += velocity_.x;
-		world_.translation_.y += velocity_.y;
-		world_.translation_.z += velocity_.z;
+		worldTransform_.translation_.x += velocity_.x;
+		worldTransform_.translation_.y += velocity_.y;
+		worldTransform_.translation_.z += velocity_.z;
 		break;
 	}
 
 	ImGui::Begin("Window");
-	ImGui::DragFloat3("world_.translation_.z", &world_.translation_.x, 0.01f);
+	ImGui::DragFloat3("world_.translation_.z", &worldTransform_.translation_.x, 0.01f);
 	ImGui::End();
 
 	// デスフラグの立った弾を削除
@@ -137,7 +137,7 @@ void Enemy::Fire() {
 
 	// 弾を生成し、初期化
 	EnemyBullet* newBullet = new EnemyBullet();
-	newBullet->Initialize(model_, world_.translation_, deltaVector_);
+	newBullet->Initialize(model_, worldTransform_.translation_, deltaVector_);
 
 	// 弾を登録する
 	bullets_.push_back(newBullet);
@@ -146,7 +146,7 @@ void Enemy::Fire() {
 
 // 描画
 void Enemy::Draw(ViewProjection& view) { 
-	model_->Draw(world_, view, textureHandle_);
+	model_->Draw(worldTransform_, view, textureHandle_);
 	
 	// 弾描画
 	for (EnemyBullet* bullet : bullets_) {

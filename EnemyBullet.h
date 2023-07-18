@@ -19,7 +19,7 @@ public:
 
 private:
 
-	WorldTransform world_;
+	WorldTransform worldTransform_;
 
 	Model* model_;
 

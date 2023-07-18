@@ -53,7 +53,7 @@ public:
 
 private:
 	//ワールドトランスフォーム
-	WorldTransform world_;
+	WorldTransform worldTransform_;
 
 	//モデル
 	Model* model_;
