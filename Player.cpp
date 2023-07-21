@@ -1,6 +1,5 @@
 ﻿#include "Player.h"
 #include <cassert>
-
 #include "ImGuiManager.h"
 
 //初期化
