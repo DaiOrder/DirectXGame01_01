@@ -11,6 +11,9 @@
 // 自クラスの前方宣言
 class Player;
 
+//ゲームシーンクラスの前方宣言
+class GameScene;
+
 class Enemy {
 public:
 	//初期化
@@ -51,6 +54,9 @@ public:
 	// 弾リストを取得
 	const std::list<EnemyBullet*> GetBullets() const { return bullets_; }
 
+	
+	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
+
 private:
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_;
@@ -78,6 +84,9 @@ private:
 	
 	// 自キャラ
 	Player* player_ = nullptr;
+
+	//ゲームシーン
+	GameScene* gameScene_ = nullptr;
 
 
 };

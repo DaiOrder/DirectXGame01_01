@@ -181,6 +181,11 @@ void GameScene::Draw() {
 #pragma endregion
 }
 
+void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
+	//リストに登録する
+	enemyBullet_.push_buack(enemyBullet);
+}
+
 void GameScene::CheckAllCollisions() { 
 	//判定対象AとBの座標
 	Vector3 posA, posB;

@@ -47,7 +47,8 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-
+	//敵弾を追加する
+	void AddEnemyBullet(EnemyBullet* enemyBullet);
 
 /// <summary>
 /// 衝突判定と応答
