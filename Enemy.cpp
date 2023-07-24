@@ -21,11 +21,7 @@ void Enemy::Initialize(Model* model, const Vector3& pos) {
 }
 
 Enemy::~Enemy() {
-	for (EnemyBullet* bullet : bullets_) {
-		if (bullet->IsDead()) {
-			delete bullet;
-		}
-	}
+	
 }
 
 Vector3 Enemy::GetWorldPosition() { 
@@ -77,14 +73,7 @@ void Enemy::Update() {
 	ImGui::DragFloat3("world_.translation_.z", &worldTransform_.translation_.x, 0.01f);
 	ImGui::End();
 
-	// デスフラグの立った弾を削除
-	bullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
-		}
-		return false;
-	});
+	
 
 	Timer--;
 	if (Timer == 0) {
@@ -95,9 +84,6 @@ void Enemy::Update() {
 	
 	}
 
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Update();
-	}
 	
 }
 
@@ -140,7 +126,7 @@ void Enemy::Fire() {
 	newBullet->Initialize(model_, worldTransform_.translation_, deltaVector_);
 
 	// 弾を登録する
-	bullets_.push_back(newBullet);
+	/*bullets_.push_back(newBullet);*/
 
 }
 
@@ -148,9 +134,5 @@ void Enemy::Fire() {
 void Enemy::Draw(ViewProjection& view) { 
 	model_->Draw(worldTransform_, view, textureHandle_);
 	
-	// 弾描画
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Draw(view);
-	}
 
 }

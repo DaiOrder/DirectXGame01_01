@@ -50,10 +50,6 @@ public:
 
 	// 衝突を検出したら呼び出されるコールバック関数
 	void OnCollision();
-
-	// 弾リストを取得
-	const std::list<EnemyBullet*> GetBullets() const { return bullets_; }
-
 	
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
@@ -74,7 +70,7 @@ private:
 	Phase phase_ = Phase::Approach;
 	
 	//EnemyBullet* bullet_ = nullptr;
-	std::list<EnemyBullet*> bullets_;
+	//std::list<EnemyBullet*> bullets_;
 
 	//タイマー
 	int32_t Timer = 0;

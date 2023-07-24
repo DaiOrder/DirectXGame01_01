@@ -49,6 +49,11 @@ public: // メンバ関数
 
 	//敵弾を追加する
 	void AddEnemyBullet(EnemyBullet* enemyBullet);
+	
+	//敵の弾のリストお引越し
+	std::list<EnemyBullet*> bullets_;
+	// 弾リストを取得
+	const std::list<EnemyBullet*> GetBullets() const { return bullets_; }
 
 /// <summary>
 /// 衝突判定と応答
@@ -85,6 +90,4 @@ private: // メンバ変数
 	//レールカメラ
 	RailCamera* railCamera_ = nullptr;
 
-	// 弾リストを取得
-	const std::list<EnemyBullet*> GetBullets() const { return enemyBullets_; }
 };
