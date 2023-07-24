@@ -90,6 +90,7 @@ void GameScene::Update() {
 	//自キャラの更新
 	player_->Update();
 
+	//敵の更新
 	enemy_->Update();
 
 	//当たり判定
@@ -101,7 +102,7 @@ void GameScene::Update() {
 	//レールカメラ
 	railCamera_->Update();
 
-	// 2-2～
+	// デバックカメラ
 	debugCamera_->Update();
 
 	#ifdef _DEBUG
@@ -186,7 +187,7 @@ void GameScene::Draw() {
 
 void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 	//リストに登録する
-	enemyBullet_.push_buack(enemyBullet);
+	enemyBullets_.push_buack(enemyBullet);
 }
 
 void GameScene::CheckAllCollisions() { 
