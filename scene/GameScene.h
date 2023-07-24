@@ -85,5 +85,6 @@ private: // メンバ変数
 	//レールカメラ
 	RailCamera* railCamera_ = nullptr;
 
-
+	// 弾リストを取得
+	const std::list<EnemyBullet*> GetBullets() const { return enemyBullets_; }
 };
