@@ -12,6 +12,12 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Vector3& position)
 
 	//シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
+
+	// 3Dレティクルのワールドトランスフォーム初期化
+	worldTransform3DReticle_.Initialize();
+
+
+	model3DReticle = model;
 }
 
 //デストラクタ
@@ -113,6 +119,25 @@ void Player::Update() {
 	//レールカメラと連動
 	worldTransform_.UpdateMatrix();
 
+	//自機のワールド座標から3Dレティクルのワールド座標を計算
+	//自機から3Dレティクルへの距離
+	const float kDistancePlyerTo3DReticle = 50.0f;
+
+	// 自機から3Dレティクルへのオフセット(Z+向き)
+	Vector3 offset = {0.0f, 0.0f, 1.0f};
+	
+	//自機のワールド行列の回転を反映
+	offset = Transform(offset, worldTransform_.matWorld_);
+
+	//ベクトルの長さを整える
+	offset = Multiply2(kDistancePlyerTo3DReticle, Normalize(offset));
+
+	//3Dレティクルの座標を設定
+	worldTransform3DReticle_.translation_ = Add(worldTransform_.translation_ , offset);
+
+	worldTransform3DReticle_.UpdateMatrix();
+	worldTransform3DReticle_.TransferMatrix();
+
 }
 
 //アタック
@@ -121,6 +146,15 @@ void Player::Update() {
 
 		// 弾の速度
 		const float kBulletSpeed = 1.0f;
+
+		Vector3 velocityReticle;
+		// 自機から照準オブジェクトへのベクトル
+		velocityReticle.x = worldTransform3DReticle_.matWorld_.m[3][0] - worldTransform_.matWorld_.m[3][0];
+		velocityReticle.y = worldTransform3DReticle_.matWorld_.m[3][1] - worldTransform_.matWorld_.m[3][1];
+		velocityReticle.z = worldTransform3DReticle_.matWorld_.m[3][2] - worldTransform_.matWorld_.m[3][2];
+
+		velocityReticle = Multiply2(kBulletSpeed, Normalize(velocityReticle));
+
 		Vector3 velocity(0, 0, kBulletSpeed);
 
 		//速度ベクトルを自機の向きに合わせて回転させる
@@ -134,7 +168,8 @@ void Player::Update() {
 		bullets_.push_back(newBullet);
 	}
 
-}
+	
+ }
 
  //ワールド座標を入れる変数
  Vector3 Player::GetWorldPosition() { 
@@ -153,6 +188,8 @@ void Player::Update() {
  void Player::Draw(ViewProjection& viewProjection) { 
 
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+
+	model3DReticle->Draw(worldTransform3DReticle_, viewProjection);
 
 	if (bullet_) {
 		bullet_->Draw(viewProjection);

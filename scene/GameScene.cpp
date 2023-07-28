@@ -19,10 +19,7 @@ GameScene::~GameScene() {
 
 	// 2-2～
 	delete debugCamera_;
-
-	// 2-6～
-	//delete enemy_;
-
+	
 	// 02-11～
 	delete modelSkydome_;
 
