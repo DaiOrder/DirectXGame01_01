@@ -5,6 +5,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "Player.h"
+#include "GameScene.h"
+
 
 // 初期化
 void Enemy::Initialize(Model* model, const Vector3& pos) {
@@ -62,6 +64,11 @@ void Enemy::Update() {
 		velocity_.x = 0.2f;
 		velocity_.y = 0.1f;
 
+		//敵の死亡フラグ
+		if (deadTimer_-- < 0) {
+			isDead_ = true;
+		}
+
 		// 移動 (ベクトルを加算)
 		worldTransform_.translation_.x += velocity_.x;
 		worldTransform_.translation_.y += velocity_.y;
@@ -73,18 +80,16 @@ void Enemy::Update() {
 	ImGui::DragFloat3("world_.translation_.z", &worldTransform_.translation_.x, 0.01f);
 	ImGui::End();
 
-	
-
 	Timer--;
 	if (Timer == 0) {
 		// 弾発射
 		Fire();
-
 		Timer = kFireInterval;
 	
 	}
 
 	
+
 }
 
 void Enemy::PhaseInitialize() {
@@ -103,8 +108,7 @@ void Enemy::Fire() {
 	Vector3 enemyWorldPos = GetWorldPosition();				//エネミー
 
 	//差分ベクトルの抽出
-	Vector3 deltaVector_;
-	deltaVector_.x = playerWorldPos.x - enemyWorldPos.x;
+	 deltaVector_.x = playerWorldPos.x - enemyWorldPos.x;
 	deltaVector_.y = playerWorldPos.y - enemyWorldPos.y;
 	deltaVector_.z = playerWorldPos.z - enemyWorldPos.z;
 
@@ -125,14 +129,15 @@ void Enemy::Fire() {
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->Initialize(model_, worldTransform_.translation_, deltaVector_);
 
-	// 弾を登録する
-	/*bullets_.push_back(newBullet);*/
+	//弾を登録する
+	bullets_.push_back(newBullet);
+
+	gameScene_->AddEnemyBullet(newBullet);
 
 }
 
 // 描画
 void Enemy::Draw(ViewProjection& view) { 
 	model_->Draw(worldTransform_, view, textureHandle_);
-	
 
 }

@@ -6,7 +6,7 @@
 
 #include "Enemy.h"
 #include "Player.h"
-//#include "Skydome.h"
+#include "fstream"
 
 GameScene::GameScene() { 
 
@@ -21,15 +21,19 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 
 	// 2-6～
-	delete enemy_;
+	//delete enemy_;
 
 	// 02-11～
 	delete modelSkydome_;
 
 	for (EnemyBullet* bullet : bullets_) {
-		if (bullet->IsDead()) {
+		
 			delete bullet;
-		}
+		
+	}
+
+	for (Enemy* enemy : enemy_) {
+		delete enemy;
 	}
 
 }
@@ -53,7 +57,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 
 	// 自機をカメラからずらす
-	Vector3 playerPosition(0.0f, 0.0f, 15.0f);
+	Vector3 playerPosition(0.0f, 0.0f, 30.0f);
 	//自キャラの初期化
 	player_->Initialize(model_, textureHandle_, playerPosition);
 
@@ -64,14 +68,12 @@ void GameScene::Initialize() {
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
 	//敵キャラの生成
-	enemy_ = new Enemy;
-	enemy_->Initialize(model_, {0, 0, 50});
-
+	//enemy_ = new Enemy;
+	//enemy_->Initialize(model_, {0, 0, 50});
 	//敵キャラにゲームシーンを渡す
-	enemy_->SetGameScene(this );
-	
+	//enemy_->SetGameScene(this );
 	// 敵キャラに自キャラのアドレスを渡す
-	enemy_->SetPlayer(player_);
+	//enemy_->SetPlayer(player_);
 
 	// 3Dモデルの生成 : スカイドーム
 	modelSkydome_ = Model::CreateFromOBJ("skydome");
@@ -91,14 +93,25 @@ void GameScene::Initialize() {
 	//自キャラとレールカメラの親子関係を結ぶ
 	player_->SetParent(&railCamera_->GetWorldTransform());
 
+	LoadEnemyPopDate();
+
+	AddEnemy({0.0f, 5.0f, 30.0f});
+
 }
 
 void GameScene::Update() {
 	//自キャラの更新
 	player_->Update();
 
-	//敵の更新
-	enemy_->Update();
+	
+
+	//敵ポップ
+	UpdateEnemyPopCommands();
+
+	// 敵の更新
+	for (Enemy* enemy : enemy_) {
+		enemy->Update();
+	}
 
 	//当たり判定
 	CheckAllCollisions();
@@ -140,8 +153,18 @@ void GameScene::Update() {
 	bullets_.remove_if([](EnemyBullet* bullet) {
 		if (bullet->IsDead()) {
 			delete bullet;
+			return true; // 要素を削除するために true を返す
+		}
+		return false; // 要素を削除しないために false を返す
+	});
+
+	// デスフラグの立った弾を削除
+	enemy_.remove_if([](Enemy* enemy_) {
+		if (enemy_->GetIsDead()) {
+			delete enemy_;
 			return true;
 		}
+
 		return false;
 	});
 	
@@ -187,7 +210,10 @@ void GameScene::Draw() {
 	}
 
 	//敵の描画
-	enemy_->Draw(viewProjection_);
+	for (Enemy* enemy : enemy_) {
+		enemy->Draw(viewProjection_);
+	}
+	
 
 	//自キャラの描画
 	player_->Draw(viewProjection_);
@@ -257,7 +283,10 @@ void GameScene::CheckAllCollisions() {
 #pragma region 自弾と敵キャラの当たり判定
 
 	// 敵キャラの座標
-	posA = enemy_->GetWorldPosition();
+	for (Enemy* enemy : enemy_) {
+		posA = enemy->GetWorldPosition();
+	}
+	
 
 	// 敵キャラと敵弾全ての当たり判定
 	for (PlayerBullet* bullet : playerBullets) {
@@ -274,7 +303,10 @@ void GameScene::CheckAllCollisions() {
 
 		if (distance <= 2) {
 			// 敵キャラの衝突時コールバックを呼び出す
-			enemy_->OnCollision();
+			for (Enemy* enemy : enemy_) {
+				enemy->OnCollision();
+			}
+			
 
 			// 自弾の衝突時コールバックを呼び出す
 			bullet->OnCollision();
@@ -314,3 +346,98 @@ void GameScene::CheckAllCollisions() {
 #pragma endregion
 
 }
+
+void GameScene::LoadEnemyPopDate() {
+	//ファイルを開く
+	std::ifstream file;
+	file.open("Resources/enemyPOP.csv");
+	assert(file.is_open());
+
+	//ファイルの内容を文字列ストリームにコピー
+	enemyPopCommands << file.rdbuf();
+
+	//ファイルを閉じる
+	file.close();
+
+}
+
+void GameScene::UpdateEnemyPopCommands() {
+	//待機処理
+	if (waitFlag_) {
+		waitTimer_--;
+		if (waitTimer_ <= 0) {
+			//待機完了
+			waitFlag_ = false;
+		}
+		return;
+	}
+
+	//１行分の文字列を入れる変数
+	std::string line;
+
+	//コマンド実行ループ
+	while (getline(enemyPopCommands, line)) {
+		//１行分の文字列をストリームに変換して解析しやすくする
+		std::istringstream line_stream(line);
+
+		std::string word;
+		//,区切りで行の先頭文字を取得
+		getline(line_stream, word, ',');
+
+		//"//"から始まる行はコメント
+		if (word.find("//") == 0) {
+			//コメント行を飛ばす
+			continue;
+		}
+
+		//POPコマンド
+		if (word.find("POP") == 0) {
+			// x座標
+			getline(line_stream, word, ',');
+			float x = (float)std::atof(word.c_str());
+			
+			// y座標
+			getline(line_stream, word, ',');
+			float y = (float)std::atof(word.c_str());
+
+			// z座標
+			getline(line_stream, word, ',');
+			float z = (float)std::atof(word.c_str());
+
+			// 敵を発生させる
+			AddEnemy(Vector3(x, y, z));
+		}
+		// WATEコマンド
+		else if (word.find("WAIT") == 0) {
+			getline(line_stream, word, ',');
+
+			// 待ち時間
+			int32_t waitTime = atoi(word.c_str());
+
+			// 待機開始
+			waitFlag_ = true;
+			waitTimer_ = waitTime;
+
+			// コマンドループを抜ける
+			break;
+
+		}
+
+	}
+	
+
+}
+
+void GameScene::AddEnemy(Vector3 xyz) { 
+	Enemy* obj = new Enemy();
+
+	obj->Initialize(model_,xyz);
+
+	obj->SetPlayer(player_);
+
+	obj->SetGameScene(this);
+
+	enemy_.push_back(obj);
+
+}
+

@@ -53,6 +53,8 @@ public:
 	
 	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
 
+	bool GetIsDead() { return isDead_;};
+
 private:
 	//ワールドトランスフォーム
 	WorldTransform worldTransform_;
@@ -69,8 +71,8 @@ private:
 	//フェーズ
 	Phase phase_ = Phase::Approach;
 	
-	//EnemyBullet* bullet_ = nullptr;
-	//std::list<EnemyBullet*> bullets_;
+	EnemyBullet* bullet_ = nullptr;
+	std::list<EnemyBullet*> bullets_;
 
 	//タイマー
 	int32_t Timer = 0;
@@ -83,6 +85,10 @@ private:
 
 	//ゲームシーン
 	GameScene* gameScene_ = nullptr;
+	
+	Vector3 deltaVector_;
 
+	bool isDead_ = false;
 
+	int deadTimer_ = 300;
 };
