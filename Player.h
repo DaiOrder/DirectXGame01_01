@@ -79,19 +79,12 @@ inline Vector3 Normalize(const Vector3& v) {
 
 // 座標変換
 inline Vector3 Transform(const Vector3& Vector, const Matrix4x4& matrix) {
-	Vector3 result;
-	result.x = Vector.x * matrix.m[0][0] + Vector.y * matrix.m[1][0] + Vector.z * matrix.m[2][0] +
-	           1.0f * matrix.m[3][0];
-	result.y = Vector.x * matrix.m[0][1] + Vector.y * matrix.m[1][1] + Vector.z * matrix.m[2][1] +
-	           1.0f * matrix.m[3][1];
-	result.z = Vector.x * matrix.m[0][2] + Vector.y * matrix.m[1][2] + Vector.z * matrix.m[2][2] +
-	           1.0f * matrix.m[3][2];
-	float w = Vector.x * matrix.m[0][3] + Vector.y * matrix.m[1][3] + Vector.z * matrix.m[2][3] +
-	          1.0f * matrix.m[3][3];
-	assert(w != 0.0f);
-	result.x /= w;
-	result.y /= w;
-	result.z /= w;
+	Vector3 result{
+	    Vector.x * matrix.m[0][0] + Vector.y * matrix.m[1][0] + Vector.z * matrix.m[2][0],
+	    Vector.x * matrix.m[0][1] + Vector.y * matrix.m[1][1] + Vector.z * matrix.m[2][1],
+	    Vector.x * matrix.m[0][2] + Vector.y * matrix.m[1][2] + Vector.z * matrix.m[2][2]
+	};
+
 	return result;
 }
 

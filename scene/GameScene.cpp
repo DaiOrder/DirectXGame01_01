@@ -54,7 +54,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 
 	// 自機をカメラからずらす
-	Vector3 playerPosition(0.0f, 0.0f, 30.0f);
+	Vector3 playerPosition(0.0f, 0.0f, 20.0f);
 	//自キャラの初期化
 	player_->Initialize(model_, textureHandle_, playerPosition);
 
@@ -201,14 +201,14 @@ void GameScene::Draw() {
 	skydome_->Draw(viewProjection_);
 
 	// 弾描画
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Draw(viewProjection_);
-	}
+	//for (EnemyBullet* bullet : bullets_) {
+	//	bullet->Draw(viewProjection_);
+	//}
 
-	//敵の描画
-	for (Enemy* enemy : enemy_) {
-		enemy->Draw(viewProjection_);
-	}
+	////敵の描画
+	//for (Enemy* enemy : enemy_) {
+	//	enemy->Draw(viewProjection_);
+	//}
 	
 
 	//自キャラの描画

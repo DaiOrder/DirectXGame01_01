@@ -86,8 +86,8 @@ void Player::Update() {
 	}
 
 	//範囲制限
-	const float kMoveLimitX = 20.0f;//34.0f
-	const float kMoveLimitY = 11.0f;//18.0f
+	const float kMoveLimitX = 34.0f;//34.0f
+	const float kMoveLimitY = 18.0f;//18.0f
 
 	//範囲を超えない処理
 	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
@@ -95,15 +95,9 @@ void Player::Update() {
 	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);
 	worldTransform_.translation_.y = min(worldTransform_.translation_.y, +kMoveLimitY);
 
-
 	//座標移動 (ベクトルの加算)
 	worldTransform_.translation_.x += move.x;// ※数学の授業で作った関数を当てはめる
 	worldTransform_.translation_.y += move.y;
-
-	worldTransform_.matWorld_ = MakeAffineMatrix(
-	    worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
-
-	worldTransform_.TransferMatrix();
 
 	//キャラクターの座標を表示
 	ImGui::SetNextWindowPos({60, 60});
@@ -121,10 +115,10 @@ void Player::Update() {
 
 	//自機のワールド座標から3Dレティクルのワールド座標を計算
 	//自機から3Dレティクルへの距離
-	const float kDistancePlyerTo3DReticle = 50.0f;
+	const float kDistancePlyerTo3DReticle = 10.0f;
 
 	// 自機から3Dレティクルへのオフセット(Z+向き)
-	Vector3 offset = {0.0f, 0.0f, 1.0f};
+	Vector3 offset = {0.0f, 0.0f, 1.0f}; 
 	
 	//自機のワールド行列の回転を反映
 	offset = Transform(offset, worldTransform_.matWorld_);
@@ -133,10 +127,10 @@ void Player::Update() {
 	offset = Multiply2(kDistancePlyerTo3DReticle, Normalize(offset));
 
 	//3Dレティクルの座標を設定
-	worldTransform3DReticle_.translation_ = Add(worldTransform_.translation_ , offset);
+	worldTransform3DReticle_.translation_ = Add(GetWorldPosition(), offset);
 
 	worldTransform3DReticle_.UpdateMatrix();
-	worldTransform3DReticle_.TransferMatrix();
+	//worldTransform3DReticle_.TransferMatrix();
 
 }
 
