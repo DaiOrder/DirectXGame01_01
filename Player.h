@@ -56,5 +56,4 @@ private:
 
 	std::list<PlayerBullet*> bullets_;
 
-
 };
