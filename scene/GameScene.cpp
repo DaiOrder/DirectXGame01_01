@@ -201,14 +201,14 @@ void GameScene::Draw() {
 	skydome_->Draw(viewProjection_);
 
 	// 弾描画
-	//for (EnemyBullet* bullet : bullets_) {
-	//	bullet->Draw(viewProjection_);
-	//}
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection_);
+	}
 
-	////敵の描画
-	//for (Enemy* enemy : enemy_) {
-	//	enemy->Draw(viewProjection_);
-	//}
+	//敵の描画
+	for (Enemy* enemy : enemy_) {
+		enemy->Draw(viewProjection_);
+	}
 	
 
 	//自キャラの描画
@@ -245,14 +245,14 @@ void GameScene::CheckAllCollisions() {
 	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
 
 	// 自弾リストの取得
-	const std::list<EnemyBullet*>& enemyBullets = GetBullets();
+	//const std::list<EnemyBullet*>& enemyBullets = GetBullets();
 
 #pragma region 自キャラと敵弾の当たり判定
 	//自キャラの座標
 	posA = player_->GetWorldPosition();
 
 	//自キャラと敵弾全ての当たり判定
-	for (EnemyBullet* bullet : enemyBullets) {
+	for (EnemyBullet* bullet : bullets_) {
 		// 敵弾の座標
 		posB = bullet->GetWorldPosition();
 
@@ -281,33 +281,32 @@ void GameScene::CheckAllCollisions() {
 	// 敵キャラの座標
 	for (Enemy* enemy : enemy_) {
 		posA = enemy->GetWorldPosition();
+
+	// 敵キャラと敵弾全ての当たり判定
+		for (PlayerBullet* bullet : playerBullets) {
+			// 自弾の座標
+			posB = bullet->GetWorldPosition();
+
+			// 座標 A・B の距離を求める
+			Vector3 dis;
+			dis.x = posA.x - posB.x;
+			dis.y = posA.y - posB.y;
+			dis.z = posA.z - posB.z;
+
+			float distance = sqrt((dis.x * dis.x) + (dis.y * dis.y) + (dis.z * dis.z));
+
+			if (distance <= 2) {
+				// 敵キャラの衝突時コールバックを呼び出す
+				enemy->OnCollision();
+
+				// 自弾の衝突時コールバックを呼び出す
+				bullet->OnCollision();
+			}
+		}
 	}
 	
 
-	// 敵キャラと敵弾全ての当たり判定
-	for (PlayerBullet* bullet : playerBullets) {
-		// 自弾の座標
-		posB = bullet->GetWorldPosition();
-
-		// 座標 A・B の距離を求める
-		Vector3 dis;
-		dis.x = posA.x - posB.x;
-		dis.y = posA.y - posB.y;
-		dis.z = posA.z - posB.z;
-
-		float distance = sqrt((dis.x * dis.x) + (dis.y * dis.y) + (dis.z * dis.z));
-
-		if (distance <= 2) {
-			// 敵キャラの衝突時コールバックを呼び出す
-			for (Enemy* enemy : enemy_) {
-				enemy->OnCollision();
-			}
-			
-
-			// 自弾の衝突時コールバックを呼び出す
-			bullet->OnCollision();
-		}
-	}
+	
 
 #pragma endregion
 
@@ -317,7 +316,7 @@ void GameScene::CheckAllCollisions() {
 	for (PlayerBullet* bulletPlayer : playerBullets) {
 		posA = bulletPlayer->GetWorldPosition();
 
-		for (EnemyBullet* bulletEnemy : enemyBullets) {
+		for (EnemyBullet* bulletEnemy : bullets_) {
 			// 自弾の座標
 			posB = bulletEnemy->GetWorldPosition();
 
