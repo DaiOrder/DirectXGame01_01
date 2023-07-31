@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "PlayerBullet.h"
 #include <cassert>
+#include "Sprite.h"
 
 #include <list>
 
@@ -14,7 +15,7 @@ public:
 	void Initialize(Model* model, uint32_t textureHandle, Vector3& position);
 
 	//更新
-	void Update();
+	void Update(ViewProjection& viewProjection);
 
 	//描画
 	void Draw(ViewProjection& viewProjection);
@@ -35,6 +36,9 @@ public:
 
 	// レールカメラとのペアレント
 	void SetParent(const WorldTransform* parent);
+
+	// UI描画
+	void DrawUI();
 
 private:
 	// ワールド変換データ
@@ -61,6 +65,9 @@ private:
 
 	// 3Dレティクル用ワールドトランスフォーム
 	WorldTransform worldTransform3DReticle_;
+
+	// 2.レティクル用スプライト
+	Sprite* sprite2DReticle_ = nullptr;
 
 };
 
@@ -124,6 +131,51 @@ inline float Dot(const Vector3& v1, const Vector3& v2) {
 	float result = 0.0f;
 
 	result = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+
+	return result;
+}
+
+// 座標変換
+inline Vector3 Transform2(const Vector3& Vector, const Matrix4x4& matrix) {
+	Vector3 result;
+	result.x = Vector.x * matrix.m[0][0] + Vector.y * matrix.m[1][0] + Vector.z * matrix.m[2][0] +
+	           1.0f * matrix.m[3][0];
+	result.y = Vector.x * matrix.m[0][1] + Vector.y * matrix.m[1][1] + Vector.z * matrix.m[2][1] +
+	           1.0f * matrix.m[3][1];
+	result.z = Vector.x * matrix.m[0][2] + Vector.y * matrix.m[1][2] + Vector.z * matrix.m[2][2] +
+	           1.0f * matrix.m[3][2];
+	float w = Vector.x * matrix.m[0][3] + Vector.y * matrix.m[1][3] + Vector.z * matrix.m[2][3] +
+	          1.0f * matrix.m[3][3];
+	assert(w != 0.0f);
+	result.x /= w;
+	result.y /= w;
+	result.z /= w;
+	return result;
+}
+
+// ビューポート変換行列
+inline Matrix4x4 MakeViewportMatrix(
+    float left, float top, float width, float height, float minDepth, float maxDepth) {
+	Matrix4x4 result;
+	result.m[0][0] = width / 2;
+	result.m[0][1] = 0.0f;
+	result.m[0][2] = 0.0f;
+	result.m[0][3] = 0.0f;
+
+	result.m[1][0] = 0.0f;
+	result.m[1][1] = -(height / 2);
+	result.m[1][2] = 0.0f;
+	result.m[1][3] = 0.0f;
+
+	result.m[2][0] = 0.0f;
+	result.m[2][1] = 0.0f;
+	result.m[2][2] = maxDepth - minDepth;
+	result.m[2][3] = 0.0f;
+
+	result.m[3][0] = left + (width / 2);
+	result.m[3][1] = top + (height / 2);
+	result.m[3][2] = minDepth;
+	result.m[3][3] = 1.0f;
 
 	return result;
 }

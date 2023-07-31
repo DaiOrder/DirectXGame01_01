@@ -54,7 +54,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 
 	// 自機をカメラからずらす
-	Vector3 playerPosition(0.0f, 0.0f, 20.0f);
+	Vector3 playerPosition(0.0f, 0.0f, 30.0f);
 	//自キャラの初期化
 	player_->Initialize(model_, textureHandle_, playerPosition);
 
@@ -63,14 +63,6 @@ void GameScene::Initialize() {
 
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
-
-	//敵キャラの生成
-	//enemy_ = new Enemy;
-	//enemy_->Initialize(model_, {0, 0, 50});
-	//敵キャラにゲームシーンを渡す
-	//enemy_->SetGameScene(this );
-	// 敵キャラに自キャラのアドレスを渡す
-	//enemy_->SetPlayer(player_);
 
 	// 3Dモデルの生成 : スカイドーム
 	modelSkydome_ = Model::CreateFromOBJ("skydome");
@@ -94,12 +86,14 @@ void GameScene::Initialize() {
 
 	AddEnemy({0.0f, 5.0f, 30.0f});
 
+	//レティクルのテクスチャ
+	TextureManager::Load("target.png");
 }
 
 void GameScene::Update() {
 
 	//自キャラの更新
-	player_->Update();
+	player_->Update(viewProjection_);
 
 	//敵ポップ
 	UpdateEnemyPopCommands();
@@ -209,7 +203,6 @@ void GameScene::Draw() {
 	for (Enemy* enemy : enemy_) {
 		enemy->Draw(viewProjection_);
 	}
-	
 
 	//自キャラの描画
 	player_->Draw(viewProjection_);
@@ -221,6 +214,9 @@ void GameScene::Draw() {
 #pragma region 前景スプライト描画
 	// 前景スプライト描画前処理
 	Sprite::PreDraw(commandList);
+
+	// 2Dのレティクルの描画
+	player_->DrawUI();
 
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
