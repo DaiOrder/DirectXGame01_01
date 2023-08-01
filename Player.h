@@ -180,8 +180,8 @@ inline Matrix4x4 MakeViewportMatrix(
 	return result;
 }
 
-inline //逆行列
-    Matrix4x4 Inverse(const Matrix4x4& m) {
+ //逆行列
+inline Matrix4x4 Inverse(const Matrix4x4& m) {
 	Matrix4x4 result;
 
 	//|A|

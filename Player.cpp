@@ -13,6 +13,9 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Vector3& position)
 	//シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
 
+	
+	model3DReticle = model;
+
 	// 3Dレティクルのワールドトランスフォーム初期化
 	worldTransform3DReticle_.Initialize();
 
@@ -22,7 +25,6 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Vector3& position)
 	//スプライト生成
 	sprite2DReticle_ = Sprite::Create(textureReticle, {640, 360}, {1, 1, 1, 1}, {0.5f, 0.5f});
 
-	model3DReticle = model;
 }
 
 //デストラクタ
@@ -141,23 +143,23 @@ void Player::Update(ViewProjection& viewProjection) {
 	worldTransform3DReticle_.TransferMatrix();
 
 	// 3Dレティクルのワールド座標から2Dレティクルのスクリーン座標を計算
-	Vector3 positionReticle;
-	positionReticle.x = worldTransform3DReticle_.matWorld_.m[3][0];
-	positionReticle.y = worldTransform3DReticle_.matWorld_.m[3][1];
-	positionReticle.z = worldTransform3DReticle_.matWorld_.m[3][2];
+	//Vector3 positionReticle;
+	//positionReticle.x = worldTransform3DReticle_.matWorld_.m[3][0];
+	//positionReticle.y = worldTransform3DReticle_.matWorld_.m[3][1];
+	//positionReticle.z = worldTransform3DReticle_.matWorld_.m[3][2];
 
-	// ビューポート行列
-	Matrix4x4 matViewport =
-	    MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+	//// ビューポート行列
+	//Matrix4x4 matViewport =
+	//    MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
 
-	// ビュー行列とプロジェクション行列、ビューポート行列を合成する
-	Matrix4x4 matViewProjectionViewport = viewProjection.matView * viewProjection.matProjection * matViewport;
+	//// ビュー行列とプロジェクション行列、ビューポート行列を合成する
+	//Matrix4x4 matViewProjectionViewport = viewProjection.matView * viewProjection.matProjection * matViewport;
 
-	// ワールド->スクリーン座標変換 (ここで3Dから2Dになる)
-	positionReticle = Transform2(positionReticle, matViewProjectionViewport);
+	//// ワールド->スクリーン座標変換 (ここで3Dから2Dになる)
+	//positionReticle = Transform2(positionReticle, matViewProjectionViewport);
 
-	// スプライトのレティクルに座標設定
-	sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+	//// スプライトのレティクルに座標設定
+	//sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
 
 	
 	// 2-15
@@ -173,7 +175,7 @@ void Player::Update(ViewProjection& viewProjection) {
 
 	//マウス座標を2Dレティクルのスプライトに代入する
 	sprite2DReticle_->SetPosition(
-	    Vector2(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y)));
+	    Vector2((float)mousePosition.x, (float) mousePosition.y));
 
 	//ビュープロジェクションビューポート合成行列
 	//ビュー行列
@@ -202,6 +204,10 @@ void Player::Update(ViewProjection& viewProjection) {
 	const float kDistanceTestObject = 50.0f;
 	worldTransform3DReticle_.translation_ = Add(posNear, Multiply2(kDistanceTestObject, mouseDrection));
 
+	//
+	worldTransform3DReticle_.UpdateMatrix();
+	worldTransform3DReticle_.TransferMatrix();
+
 	ImGui::Begin("Player");
 	ImGui::Text("2DReticle:(%f,%f)", sprite2DReticle_->GetPosition().x, sprite2DReticle_->GetPosition().y);
 	ImGui::Text("Near:(%+.2f,%+.2f,%+.2f)", posNear.x, posNear.y, posNear.z);
@@ -221,20 +227,20 @@ void Player::Update(ViewProjection& viewProjection) {
 
 		Vector3 velocityReticle;
 		// 自機から照準オブジェクトへのベクトル
-		velocityReticle.x = worldTransform3DReticle_.matWorld_.m[3][0] - worldTransform_.matWorld_.m[3][0];
-		velocityReticle.y = worldTransform3DReticle_.matWorld_.m[3][1] - worldTransform_.matWorld_.m[3][1];
-		velocityReticle.z = worldTransform3DReticle_.matWorld_.m[3][2] - worldTransform_.matWorld_.m[3][2];
+		velocityReticle.x = worldTransform3DReticle_.translation_.x - worldTransform_.matWorld_.m[3][0];
+		velocityReticle.y = worldTransform3DReticle_.translation_.y - worldTransform_.matWorld_.m[3][1];
+		velocityReticle.z = worldTransform3DReticle_.translation_.z - worldTransform_.matWorld_.m[3][2];
 
 		velocityReticle = Multiply2(kBulletSpeed, Normalize(velocityReticle));
 
 		Vector3 velocity(0, 0, kBulletSpeed);
 
 		//速度ベクトルを自機の向きに合わせて回転させる
-		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+		//velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, GetWorldPosition(), velocity);
+		newBullet->Initialize(model_, GetWorldPosition(), velocityReticle);
 
 		// 弾を登録する
 		bullets_.push_back(newBullet);
