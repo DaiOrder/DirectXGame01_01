@@ -14,7 +14,7 @@ GameScene::GameScene() {
 
 GameScene::~GameScene() {
 	delete player_;
-
+	 
 	delete model_;
 
 	// 2-2～
