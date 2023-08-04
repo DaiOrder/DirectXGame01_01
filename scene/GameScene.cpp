@@ -1,6 +1,8 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include "AxisIndicator.h"
+
 
 GameScene::GameScene() {}
 
@@ -29,6 +31,8 @@ void GameScene::Initialize() {
 
 	model_ = Model::Create();
 	
+	AxisIndicator::GetInstance()->SetVisible(true);
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
 	//自キャラの生成
 	player_ = new Player();
