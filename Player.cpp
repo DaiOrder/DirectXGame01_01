@@ -218,7 +218,7 @@ void Player::Update(ViewProjection& viewProjection) {
 
 }
 
-//アタック
+///アタック
  void Player::Attack() {
 	if (input_->TriggerKey(DIK_SPACE)) {
 
