@@ -8,6 +8,7 @@ GameScene::~GameScene() {
 	delete sprite_;
 	delete player_;
 	delete model_;
+
 }
 
 void GameScene::Initialize() {
