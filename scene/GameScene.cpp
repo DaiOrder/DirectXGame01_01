@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include <cassert>
 #include<math.h>
+#include "AxisIndicator.h"
 
 #include "Enemy.h"
 #include "Player.h"
@@ -39,6 +40,9 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 
 	model_ = Model::Create();
+
+	AxisIndicator::GetInstance()->SetVisible(true);
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
 	//自キャラの生成
 	player_ = new Player();
