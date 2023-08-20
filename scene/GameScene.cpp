@@ -24,9 +24,7 @@ GameScene::~GameScene() {
 	delete modelSkydome_;
 
 	for (EnemyBullet* bullet : bullets_) {
-		
 			delete bullet;
-		
 	}
 
 	for (Enemy* enemy : enemy_) {
@@ -82,6 +80,7 @@ void GameScene::Initialize() {
 	//自キャラとレールカメラの親子関係を結ぶ
 	player_->SetParent(&railCamera_->GetWorldTransform());
 
+	//CSVデータを読み込む
 	LoadEnemyPopDate();
 
 	AddEnemy({0.0f, 5.0f, 30.0f});
@@ -102,6 +101,12 @@ void GameScene::Update() {
 	for (Enemy* enemy : enemy_) {
 		enemy->Update();
 	}
+
+	//敵の弾更新
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Update();
+	}
+
 
 	//当たり判定
 	CheckAllCollisions();
@@ -158,10 +163,6 @@ void GameScene::Update() {
 		return false;
 	});
 	
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Update();
-	}
-
 }
 
 void GameScene::Draw() {

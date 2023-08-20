@@ -88,7 +88,6 @@ void Enemy::Update() {
 	
 	}
 
-	
 
 }
 
@@ -115,7 +114,6 @@ void Enemy::Fire() {
 	//正規化
 	float length = sqrt(
 	deltaVector_.x * deltaVector_.x + deltaVector_.y * deltaVector_.y + deltaVector_.z * deltaVector_.z);
-
 	deltaVector_.x /= length;
 	deltaVector_.y /= length;
 	deltaVector_.z /= length;
