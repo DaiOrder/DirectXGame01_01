@@ -75,7 +75,7 @@ void GameScene::Initialize() {
 	railCamera_ = new RailCamera();
 
 	//レールカメラの初期化
-	railCamera_->Initialize({0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 0.0f});
+	railCamera_->Initialize({0.0f, 0.0f,-55.0f}, {0.0f, 0.0f, 0.0f});
 
 	//自キャラとレールカメラの親子関係を結ぶ
 	player_->SetParent(&railCamera_->GetWorldTransform());

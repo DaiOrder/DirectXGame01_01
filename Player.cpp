@@ -12,7 +12,6 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Vector3& position)
 
 	//シングルトンインスタンスを取得する
 	input_ = Input::GetInstance();
-
 	
 	model3DReticle = model;
 
