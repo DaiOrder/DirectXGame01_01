@@ -35,7 +35,7 @@ public:
 	~Enemy();
 
 	// 発射間隔
-	static const int kFireInterval = 40;
+	static const int kFireInterval = 50;
 
 	void SetPlayer(Player* player) { player_ = player; }
 

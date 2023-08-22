@@ -107,7 +107,6 @@ void GameScene::Update() {
 		bullet->Update();
 	}
 
-
 	//当たり判定
 	CheckAllCollisions();
 
@@ -232,6 +231,7 @@ void GameScene::Draw() {
 void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 	//リストに登録する
 	bullets_.push_back(enemyBullet);
+
 }
 
 void GameScene::CheckAllCollisions() { 
@@ -301,8 +301,6 @@ void GameScene::CheckAllCollisions() {
 			}
 		}
 	}
-	
-
 	
 
 #pragma endregion

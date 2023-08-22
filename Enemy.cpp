@@ -83,7 +83,10 @@ void Enemy::Update() {
 	Timer--;
 	if (Timer == 0) {
 		// 弾発射
-		Fire();
+
+		if (phase_ != Phase::Leave) {
+			Fire();
+		}
 		Timer = kFireInterval;
 	
 	}
