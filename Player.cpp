@@ -219,7 +219,7 @@ void Player::Update(ViewProjection& viewProjection) {
 
 ///アタック
  void Player::Attack() {
-	if (input_->TriggerKey(DIK_SPACE)) {
+	if (input_->TriggerKey(DIK_SPACE)==1) {
 
 		// 弾の速度
 		const float kBulletSpeed = 1.0f;
