@@ -69,6 +69,12 @@ private:
 	// 2.レティクル用スプライト
 	Sprite* sprite2DReticle_ = nullptr;
 
+	//弾連射・フラグ
+	bool fireFlag_;
+
+	// 弾連射・タイマー
+	int fireTimer_;
+
 };
 
 // 正規化

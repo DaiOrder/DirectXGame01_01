@@ -141,25 +141,6 @@ void Player::Update(ViewProjection& viewProjection) {
 	worldTransform3DReticle_.UpdateMatrix();
 	worldTransform3DReticle_.TransferMatrix();
 
-	// 3Dレティクルのワールド座標から2Dレティクルのスクリーン座標を計算
-	//Vector3 positionReticle;
-	//positionReticle.x = worldTransform3DReticle_.matWorld_.m[3][0];
-	//positionReticle.y = worldTransform3DReticle_.matWorld_.m[3][1];
-	//positionReticle.z = worldTransform3DReticle_.matWorld_.m[3][2];
-
-	//// ビューポート行列
-	//Matrix4x4 matViewport =
-	//    MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
-
-	//// ビュー行列とプロジェクション行列、ビューポート行列を合成する
-	//Matrix4x4 matViewProjectionViewport = viewProjection.matView * viewProjection.matProjection * matViewport;
-
-	//// ワールド->スクリーン座標変換 (ここで3Dから2Dになる)
-	//positionReticle = Transform2(positionReticle, matViewProjectionViewport);
-
-	//// スプライトのレティクルに座標設定
-	//sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
-
 	
 	// 2-15
 	//マウスカーソルのスクリーン座標からワールド座標を取得して3Dレティクル配置
@@ -219,23 +200,32 @@ void Player::Update(ViewProjection& viewProjection) {
 
 ///アタック
  void Player::Attack() {
-	if (input_->TriggerKey(DIK_SPACE)==1) {
+	if (input_->IsPressMouse(0)) {
+		fireTimer_++;
+		if (fireTimer_ == 15) {
+			fireFlag_ = 1;
+		}
+		
+	} else {
+		fireTimer_ = 0;
+	}
 
+	if (fireFlag_ == 1) {
 		// 弾の速度
 		const float kBulletSpeed = 1.0f;
 
 		Vector3 velocityReticle;
 		// 自機から照準オブジェクトへのベクトル
-		velocityReticle.x = worldTransform3DReticle_.translation_.x - worldTransform_.matWorld_.m[3][0];
-		velocityReticle.y = worldTransform3DReticle_.translation_.y - worldTransform_.matWorld_.m[3][1];
-		velocityReticle.z = worldTransform3DReticle_.translation_.z - worldTransform_.matWorld_.m[3][2];
+		velocityReticle.x =
+		    worldTransform3DReticle_.translation_.x - worldTransform_.matWorld_.m[3][0];
+		velocityReticle.y =
+		    worldTransform3DReticle_.translation_.y - worldTransform_.matWorld_.m[3][1];
+		velocityReticle.z =
+		    worldTransform3DReticle_.translation_.z - worldTransform_.matWorld_.m[3][2];
 
 		velocityReticle = Multiply2(kBulletSpeed, Normalize(velocityReticle));
 
 		Vector3 velocity(0, 0, kBulletSpeed);
-
-		//速度ベクトルを自機の向きに合わせて回転させる
-		//velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 
 		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
@@ -243,8 +233,11 @@ void Player::Update(ViewProjection& viewProjection) {
 
 		// 弾を登録する
 		bullets_.push_back(newBullet);
-	}
 
+		//フラグリセット
+		fireFlag_ = 0;
+		fireTimer_ = 0;
+	}
 	
  }
 
