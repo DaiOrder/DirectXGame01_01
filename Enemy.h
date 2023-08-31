@@ -5,6 +5,7 @@
 #include "WorldTransform.h"
 #include "Input.h"
 #include "EnemyBullet.h"
+#include "Effect.h"
 
 #include <list>
 
@@ -14,8 +15,11 @@ class Player;
 //ゲームシーンクラスの前方宣言
 class GameScene;
 
+class Effect;
+
 class Enemy {
 public:
+
 	//初期化
 	void Initialize(Model* model, const Vector3& pos);
 
@@ -35,7 +39,7 @@ public:
 	~Enemy();
 
 	// 発射間隔
-	static const int kFireInterval = 55;
+	static const int kFireInterval = 50;
 
 	void SetPlayer(Player* player) { player_ = player; }
 
@@ -88,7 +92,15 @@ private:
 	
 	Vector3 deltaVector_;
 
+	Effect* effect_ = nullptr;
+
+	//デスフラグ
 	bool isDead_ = false;
 
+	//デスタイマー
 	int deadTimer_ = 300;
+
+	//エネミーHP
+	int enemyHp_;
+
 };

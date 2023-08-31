@@ -148,21 +148,6 @@ void RailCamera::Update() {
 	//カメラオブジェクトのワールド行列を計算する
 	viewProjection_.matView = Inverse(worldTransform_.matWorld_);
 
-	ImGui::Begin("Camera");
-	//移動
-	float sliderValue[3] = {
-	    worldTransform_.translation_.x, worldTransform_.translation_.y,
-	    worldTransform_.translation_.z};
-	ImGui::SliderFloat3("position", sliderValue, -20.0f, 20.0f);
-	worldTransform_.translation_ = {sliderValue[0], sliderValue[1], sliderValue[2]};
-
-	//回転
-	float sliderValue2[3] = {
-	    worldTransform_.rotation_.x, worldTransform_.rotation_.y,
-		worldTransform_.rotation_.z};
-	ImGui::SliderFloat3("rotation", sliderValue2, -20.0f, 20.0f);
-	worldTransform_.rotation_ = {sliderValue2[0], sliderValue2[1], sliderValue2[2]};
-
-	ImGui::End();
+	
 
 }

@@ -73,6 +73,9 @@
     <Filter Include="ヘッダー ファイル\RailCamera">
       <UniqueIdentifier>{7f850171-4fa3-477a-8162-8c4879de3e0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Effect">
+      <UniqueIdentifier>{e9895366-d805-4b52-8e50-7abb45a17ed0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -112,6 +115,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="RailCamera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -217,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="RailCamera.h">
       <Filter>ヘッダー ファイル\RailCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

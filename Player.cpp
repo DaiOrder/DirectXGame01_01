@@ -3,10 +3,10 @@
 #include "ImGuiManager.h"
 
 //初期化
-void Player::Initialize(Model* model, uint32_t textureHandle, Vector3& position) {
+void Player::Initialize(Model* model,Vector3& position) {
 	assert(model);
 	model_ = model;
-	textureHandle_ = textureHandle;
+	//textureHandle_ = textureHandle;
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 
@@ -24,6 +24,7 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Vector3& position)
 	//スプライト生成
 	sprite2DReticle_ = Sprite::Create(textureReticle, {640, 360}, {1, 1, 1, 1}, {0.5f, 0.5f});
 
+	playerHp_ = 5;
 }
 
 //デストラクタ
@@ -40,7 +41,10 @@ Player::~Player() {
 }
 
 //衝突判定
-void Player::OnCollision() {}
+void Player::OnCollision() { 
+	playerHp_ -= 1;
+
+}
 
 //更新
 void Player::Update(ViewProjection& viewProjection) {
@@ -95,8 +99,8 @@ void Player::Update(ViewProjection& viewProjection) {
 	}
 
 	//範囲制限
-	const float kMoveLimitX = 34.0f;//34.0f
-	const float kMoveLimitY = 18.0f;//18.0f
+	const float kMoveLimitX = 20.0f;//34.0f
+	const float kMoveLimitY = 10.0f;//18.0f
 
 	//範囲を超えない処理
 	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
@@ -108,16 +112,7 @@ void Player::Update(ViewProjection& viewProjection) {
 	worldTransform_.translation_.x += move.x;// ※数学の授業で作った関数を当てはめる
 	worldTransform_.translation_.y += move.y;
 
-	//キャラクターの座標を表示
-	ImGui::SetNextWindowPos({60, 60});
-	ImGui::SetNextWindowContentSize({300, 100});
-	ImGui::Begin("Player");
-	float sliderValue[3] = {
-	    worldTransform_.translation_.x, worldTransform_.translation_.y,
-	    worldTransform_.translation_.z};
-	ImGui::SliderFloat3("position", sliderValue, -20.0f, 20.0f);
-	worldTransform_.translation_ = {sliderValue[0], sliderValue[1], sliderValue[2]};
-	ImGui::End();
+	
 
 	//レールカメラと連動
 	worldTransform_.UpdateMatrix();
@@ -188,13 +183,6 @@ void Player::Update(ViewProjection& viewProjection) {
 	worldTransform3DReticle_.UpdateMatrix();
 	worldTransform3DReticle_.TransferMatrix();
 
-	ImGui::Begin("Player");
-	ImGui::Text("2DReticle:(%f,%f)", sprite2DReticle_->GetPosition().x, sprite2DReticle_->GetPosition().y);
-	ImGui::Text("Near:(%+.2f,%+.2f,%+.2f)", posNear.x, posNear.y, posNear.z);
-	ImGui::Text("Far:(%+.2f,%+.2f,%+.2f)", posFar.x, posFar.y, posFar.z);
-	ImGui::Text("3DReticle:(%+.2f,%+.2f,%+.2f)",
-		worldTransform3DReticle_.translation_.x,worldTransform3DReticle_.translation_.y, worldTransform3DReticle_.translation_.z);
-	ImGui::End();
 
 }
 
@@ -202,7 +190,7 @@ void Player::Update(ViewProjection& viewProjection) {
  void Player::Attack() {
 	if (input_->IsPressMouse(0)) {
 		fireTimer_++;
-		if (fireTimer_ == 15) {
+		if (fireTimer_ == 10) {
 			fireFlag_ = 1;
 		}
 		
@@ -212,7 +200,7 @@ void Player::Update(ViewProjection& viewProjection) {
 
 	if (fireFlag_ == 1) {
 		// 弾の速度
-		const float kBulletSpeed = 1.0f;
+		const float kBulletSpeed = 2.5f;
 
 		Vector3 velocityReticle;
 		// 自機から照準オブジェクトへのベクトル
@@ -257,9 +245,11 @@ void Player::Update(ViewProjection& viewProjection) {
  //描画
  void Player::Draw(ViewProjection& viewProjection) { 
 
-	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	if (playerHp_ > 0) {
+		model_->Draw(worldTransform_, viewProjection);
+	}
 
-	model3DReticle->Draw(worldTransform3DReticle_, viewProjection);
+	//model3DReticle->Draw(worldTransform3DReticle_, viewProjection);
 
 	if (bullet_) {
 		bullet_->Draw(viewProjection);

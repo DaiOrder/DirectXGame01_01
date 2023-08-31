@@ -13,19 +13,24 @@ void Enemy::Initialize(Model* model, const Vector3& pos) {
 	assert(model);
 	model_ = model;
 
-	textureHandle_ = TextureManager::Load("sample.png");
+	//textureHandle_ = TextureManager::Load("sample.png");
 
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = pos;
 
 	PhaseInitialize();
 
+	//敵HP
+	enemyHp_ = 1;
+	
 }
+
 
 Enemy::~Enemy() {
 	
 }
 
+//ワールド座標取得
 Vector3 Enemy::GetWorldPosition() { 
 	// ワールド座標を入れる変数
 	Vector3 worldPos;
@@ -38,7 +43,12 @@ Vector3 Enemy::GetWorldPosition() {
 	return worldPos;
 }
 
-void Enemy::OnCollision() {}
+//当たり判定
+void Enemy::OnCollision() { 
+	enemyHp_ -= 1; 
+	
+	//effect_->SetWorldPosition(worldTransform_.translation_);
+}
 
 // アプデ
 void Enemy::Update() {
@@ -57,6 +67,7 @@ void Enemy::Update() {
 
 		if (worldTransform_.translation_.z < -10.0f) {
 			phase_ = Phase::Leave;
+
 		}
 		break;
 
@@ -65,7 +76,7 @@ void Enemy::Update() {
 		velocity_.y = 0.1f;
 
 		//敵の死亡フラグ
-		if (deadTimer_-- < 0) {
+		if (deadTimer_-- < 0) {//時間で死亡
 			isDead_ = true;
 		}
 
@@ -76,9 +87,6 @@ void Enemy::Update() {
 		break;
 	}
 
-	ImGui::Begin("Window");
-	ImGui::DragFloat3("world_.translation_.z", &worldTransform_.translation_.x, 0.01f);
-	ImGui::End();
 
 	Timer--;
 	if (Timer == 0) {
@@ -91,15 +99,21 @@ void Enemy::Update() {
 	
 	}
 
-
+	// 敵の死亡フラグ
+	if (enemyHp_ == 0) { // 体力で死亡
+		isDead_ = true;
+	}
+	
 }
 
+//フェーズチェンジの初期化
 void Enemy::PhaseInitialize() {
 	//発射タイマーの初期化
 	Timer = kFireInterval;
 
 }
 
+//弾発射
 void Enemy::Fire() {
 
 	assert(player_);
@@ -139,6 +153,6 @@ void Enemy::Fire() {
 
 // 描画
 void Enemy::Draw(ViewProjection& view) { 
-	model_->Draw(worldTransform_, view, textureHandle_);
+	model_->Draw(worldTransform_, view/*,textureHandle_*/);
 
 }

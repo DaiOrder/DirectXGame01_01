@@ -12,7 +12,7 @@
 class Player {
 public:
 	//初期化
-	void Initialize(Model* model, uint32_t textureHandle, Vector3& position);
+	void Initialize(Model* model, /*uint32_t textureHandle,*/ Vector3& position);
 
 	//更新
 	void Update(ViewProjection& viewProjection);
@@ -51,6 +51,7 @@ private:
 
 	// 自機テクスチャハンドル
 	uint32_t textureHandle_ = 0u;
+	Model* modelPlayer_ = nullptr;
 
 	//旋回
 	WorldTransform rotation_;
@@ -74,6 +75,8 @@ private:
 
 	// 弾連射・タイマー
 	int fireTimer_;
+
+	int playerHp_;
 
 };
 

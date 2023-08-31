@@ -15,7 +15,7 @@
 #include "Skydome.h"
 #include "RailCamera.h"
 #include "sstream"
-
+#include "Effect.h"
 
 /// <summary>
 /// ゲームシーン
@@ -73,6 +73,10 @@ public: // メンバ関数
 	// 敵を発生させる
 	void AddEnemy(Vector3 xyz);
 
+	void ResetEnemies();
+
+	void ResetInitialize();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -84,10 +88,26 @@ private: // メンバ変数
 	
 	//2-1～
 	uint32_t textureHandle_ = 0;
+
+	uint32_t tex_[4] = {0};
+	Sprite* tex1 = nullptr;
+	Sprite* tex2 = nullptr;
+	Sprite* tex3 = nullptr;
+	Sprite* tex4 = nullptr;
+
+	
+	uint32_t Hp_[5] = {0};
+	Sprite* Hp1 = nullptr;
+	Sprite* Hp2 = nullptr;
+	Sprite* Hp3 = nullptr;
+	Sprite* Hp4 = nullptr;
+	Sprite* Hp5 = nullptr;
+
 	ViewProjection viewProjection_;
 	Model* model_ = nullptr;
 	Player* player_ = nullptr;
-	//Enemy* enemy_ = nullptr;
+	Effect* effect_ = nullptr;
+	Enemy* enemy__ = nullptr;
 
 	// 2-2～
 	bool isDebugCameraActve_ = false;
@@ -96,6 +116,10 @@ private: // メンバ変数
 	// 2-11
 	//3Dモデルデータ
 	Model* modelSkydome_ = nullptr;
+	Model* modelPlyer_ = nullptr;
+	Model* modelEffect_ = nullptr;
+	Model* modelEnemy_ = nullptr;
+
 	//3Dモデルデータの生成
 	Skydome* skydome_ = nullptr;
 
@@ -111,5 +135,24 @@ private: // メンバ変数
 
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_;
+
+	enum class Phase { 
+		title,//タイトル
+		explanation,//操作説明
+		game,//プレイ
+		finish,//終了
+		dead,//死亡
+		reset//リセット
+	};
+
+	Phase phase_ = Phase::title;
+
+	public:
+	int enemyDead_ = 0;
+	int playerDead_ = 0;
+
+	int timePhase_;
+
+
 
 };
